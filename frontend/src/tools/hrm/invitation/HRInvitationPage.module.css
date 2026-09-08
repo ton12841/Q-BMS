@@ -1,0 +1,147 @@
+.backButton,
+.refreshButton {
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 12px;
+  border: 1px solid #d9e3ee;
+  border-radius: 10px;
+  background: #fff;
+  color: #52677f;
+  font-size: var(--qbms-font-small);
+  font-weight: 750;
+  text-decoration: none;
+}
+.refreshButton { cursor: pointer; }
+.backButton:hover,
+.refreshButton:hover:not(:disabled) {
+  border-color: #bdd4ef;
+  color: #0d5bd7;
+  background: #f8fbff;
+}
+.refreshButton:disabled { opacity: .55; cursor: default; }
+.deliveryNotice {
+  margin-top: 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 13px 15px;
+  border: 1px solid #dce8f5;
+  border-radius: 14px;
+  background: #f8fbff;
+}
+.noticeIcon {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 34px;
+  border-radius: 10px;
+  color: #0d63df;
+  background: #eaf4ff;
+}
+.deliveryNotice strong { display: block; color: #34465e; font-size: var(--qbms-font-body); }
+.deliveryNotice p { margin: 4px 0 0; color: #74849a; font-size: var(--qbms-font-small); line-height: 1.55; }
+.successNotice,
+.errorNotice {
+  margin-top: 12px;
+  padding: 11px 14px;
+  border-radius: 12px;
+  font-size: var(--qbms-font-small);
+  font-weight: 650;
+}
+.successNotice { border: 1px solid #cce9dc; background: #f3fbf7; color: #257156; }
+.errorNotice { border: 1px solid #f0cdcd; background: #fff8f8; color: #a03a3a; }
+.tablePanel {
+  margin-top: 18px;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  background: #fff;
+  overflow: hidden;
+}
+.tableHeader {
+  padding: 16px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  border-bottom: 1px solid #edf1f5;
+}
+.tableHeader h3 { margin: 0; color: #33465f; font-size: var(--qbms-font-card-title); }
+.tableHeader p { margin: 5px 0 0; color: #8492a4; font-size: var(--qbms-font-small); }
+.tableHeader > span { color: #8695a8; font-size: var(--qbms-font-small); }
+.tableWrap { overflow-x: auto; }
+.table { width: 100%; border-collapse: collapse; min-width: 980px; }
+.table th {
+  padding: 11px 14px;
+  background: #f8fafc;
+  border-bottom: 1px solid #e8edf2;
+  color: #728197;
+  font-size: var(--qbms-font-caption);
+  font-weight: 800;
+  text-align: left;
+  white-space: nowrap;
+}
+.table td {
+  padding: 13px 14px;
+  border-bottom: 1px solid #edf1f5;
+  color: #53667d;
+  font-size: var(--qbms-font-small);
+  vertical-align: middle;
+}
+.table tbody tr:last-child td { border-bottom: 0; }
+.employeeCell,
+.stackCell { display: flex; flex-direction: column; gap: 3px; }
+.employeeCell strong,
+.stackCell strong { color: #35485f; font-size: var(--qbms-font-small); }
+.employeeCell span,
+.stackCell span { color: #8b98a8; font-size: var(--qbms-font-caption); }
+.emailText { white-space: nowrap; color: #45627f; }
+.statusBadge {
+  min-height: 26px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 9px;
+  border-radius: 999px;
+  background: #f0f2f5;
+  color: #6d7887;
+  font-size: var(--qbms-font-caption);
+  font-weight: 800;
+  white-space: nowrap;
+}
+.statusDRAFT { background: #eaf4ff; color: #1c68c8; }
+.statusQUEUED { background: #fff6df; color: #9a6b12; }
+.statusSENT { background: #eef2ff; color: #5662b8; }
+.statusACCEPTED { background: #eaf9f4; color: #137458; }
+.statusEXPIRED,
+.statusREVOKED { background: #f2f3f5; color: #7b8490; }
+.actions { display: flex; align-items: center; gap: 7px; min-width: 158px; }
+.primaryAction,
+.secondaryAction {
+  min-height: 32px;
+  padding: 0 10px;
+  border-radius: 9px;
+  font-size: var(--qbms-font-caption);
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.primaryAction { border: 1px solid #1268dc; background: #1268dc; color: #fff; }
+.secondaryAction { border: 1px solid #dce3eb; background: #fff; color: #68788c; }
+.primaryAction:disabled,
+.secondaryAction:disabled { opacity: .55; cursor: default; }
+.noAction { color: #a1acb8; }
+.emptyState {
+  min-height: 230px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 24px;
+  color: #91a0b2;
+  text-align: center;
+}
+.emptyState strong { color: #52657d; font-size: var(--qbms-font-body); }
+.emptyState p { margin: 0; max-width: 520px; font-size: var(--qbms-font-small); line-height: 1.55; }

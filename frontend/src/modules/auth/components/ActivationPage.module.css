@@ -1,0 +1,245 @@
+.page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  position: relative;
+  padding: 44px 20px;
+  background:
+    radial-gradient(circle at 12% 10%, rgba(57, 126, 242, 0.13), transparent 24%),
+    radial-gradient(circle at 90% 88%, rgba(90, 159, 255, 0.1), transparent 22%),
+    #f4f7fc;
+}
+
+.language {
+  position: absolute;
+  top: 24px;
+  right: 28px;
+}
+
+.card {
+  width: min(620px, 100%);
+  padding: 34px;
+  border: 1px solid #d8e2f0;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 28px 70px rgba(24, 56, 104, 0.11);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e9eef6;
+}
+
+.brand img {
+  width: 54px;
+  height: 54px;
+  object-fit: contain;
+}
+
+.brand div {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand strong {
+  color: #18243b;
+  font-size: 20px;
+}
+
+.brand span {
+  color: #8290a6;
+  font-size: 10px;
+}
+
+.icon {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  margin-top: 28px;
+  border-radius: 16px;
+  background: #edf4ff;
+  color: #1767e5;
+}
+
+.icon svg {
+  width: 25px;
+  height: 25px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.eyebrow {
+  display: block;
+  margin-top: 18px;
+  color: #2c72e9;
+  font-size: 10px;
+  font-weight: 850;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.card h1 {
+  margin: 7px 0 8px;
+  color: #172239;
+  font-size: 34px;
+  letter-spacing: -0.045em;
+}
+
+.lead {
+  margin: 0 0 24px;
+  color: #70809a;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.stateBox,
+.errorBox,
+.warningBox {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.stateBox {
+  border: 1px solid #dae5f5;
+  background: #f7faff;
+  color: #657893;
+}
+
+.errorBox {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border: 1px solid #f1caca;
+  background: #fff7f7;
+  color: #9c3e3e;
+}
+
+.warningBox {
+  border: 1px solid #ead9af;
+  background: #fffaf1;
+  color: #806229;
+}
+
+.employeeBox {
+  padding: 18px;
+  border: 1px solid #dbe5f2;
+  border-radius: 18px;
+  background: #f9fbfe;
+}
+
+.employeeName {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #e5ebf4;
+}
+
+.employeeName span,
+.infoGrid span {
+  color: #8795aa;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.employeeName strong {
+  color: #21304a;
+  font-size: 17px;
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px 22px;
+  padding-top: 15px;
+}
+
+.infoGrid div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.infoGrid strong {
+  overflow-wrap: anywhere;
+  color: #354660;
+  font-size: 12px;
+}
+
+.instruction {
+  margin: 19px 2px 12px;
+  color: #697b97;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.googleButton {
+  width: 100%;
+  min-height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 11px;
+  border: 0;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #347cf1, #1764e9);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 800;
+  box-shadow: 0 12px 26px rgba(23, 100, 233, 0.21);
+}
+
+.googleButton span {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.googleButton svg {
+  width: 17px;
+  height: 17px;
+}
+
+.googleButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  box-shadow: none;
+}
+
+.footerLinks {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+  color: #8c99ac;
+  font-size: 10px;
+}
+
+.footerLinks a {
+  color: #4c73aa;
+  text-decoration: none;
+}
+
+@media (max-width: 620px) {
+  .page { padding: 72px 14px 24px; }
+  .language { top: 18px; right: 18px; }
+  .card { padding: 25px 19px; border-radius: 22px; }
+  .card h1 { font-size: 29px; }
+  .infoGrid { grid-template-columns: 1fr; }
+}

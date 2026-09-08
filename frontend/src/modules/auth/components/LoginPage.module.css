@@ -1,0 +1,699 @@
+.page {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(360px, 38%) minmax(0, 1fr);
+  overflow: hidden;
+  background: #f4f7fc;
+}
+
+.brandPanel {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 48px 46px 34px;
+  overflow: hidden;
+  color: #fff;
+  background:
+    radial-gradient(circle at 18% 7%, rgba(112, 211, 255, 0.34), transparent 21%),
+    linear-gradient(160deg, #377ff1 0%, #1262e8 45%, #0750c7 100%);
+}
+
+.glowOne,
+.glowTwo,
+.orbit {
+  position: absolute;
+  pointer-events: none;
+}
+
+.glowOne {
+  width: 420px;
+  height: 420px;
+  left: -240px;
+  bottom: -120px;
+  border-radius: 50%;
+  background: rgba(17, 86, 212, 0.32);
+}
+
+.glowTwo {
+  width: 500px;
+  height: 500px;
+  right: -310px;
+  bottom: -130px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.orbit {
+  width: 360px;
+  height: 360px;
+  right: -235px;
+  top: 46%;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.brandTop,
+.brandMessage,
+.statusPill,
+.brandVersion {
+  position: relative;
+  z-index: 2;
+}
+
+.brandTop {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.logo {
+  width: 82px;
+  height: 82px;
+  object-fit: contain;
+  filter: drop-shadow(0 14px 22px rgba(0, 30, 102, 0.25));
+}
+
+.brandMeta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.brandMeta span {
+  margin-bottom: 3px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.19em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.brandMeta strong {
+  font-size: clamp(28px, 2.4vw, 39px);
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.brandMeta small {
+  margin-top: 9px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.brandMessage {
+  margin-top: clamp(74px, 13vh, 132px);
+  max-width: 430px;
+}
+
+.rule {
+  display: block;
+  width: 54px;
+  height: 3px;
+  margin-bottom: 34px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.86);
+}
+
+.brandMessage h2 {
+  margin: 0;
+  max-width: 420px;
+  font-size: clamp(38px, 4.2vw, 58px);
+  line-height: 1.04;
+  letter-spacing: -0.055em;
+  font-weight: 820;
+}
+
+.brandMessage p {
+  margin: 26px 0 0;
+  max-width: 425px;
+  font-size: 15px;
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.statusPill {
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 42px;
+  padding: 8px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #69eca9;
+  box-shadow: 0 0 0 4px rgba(105, 236, 169, 0.13);
+}
+
+.brandVersion {
+  margin-top: auto;
+  padding-top: 42px;
+  font-size: 10px;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.56);
+}
+
+.accessPanel {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 38px 54px 28px;
+  background:
+    radial-gradient(circle at 93% 4%, rgba(85, 137, 242, 0.08), transparent 28%),
+    linear-gradient(180deg, #f6f8fc 0%, #f3f6fb 100%);
+}
+
+.language {
+  position: absolute;
+  top: 28px;
+  right: 34px;
+  z-index: 4;
+}
+
+.accessContent {
+  width: min(590px, 100%);
+  margin: auto;
+}
+
+.secureBadge {
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px;
+  border: 1px solid #cfe0fb;
+  border-radius: 999px;
+  background: #edf4ff;
+  color: #1766dc;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.secureBadge span,
+.workspaceShield,
+.userIcon {
+  display: grid;
+  place-items: center;
+}
+
+.secureBadge svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.accessContent > h1 {
+  margin: 22px 0 8px;
+  font-size: clamp(42px, 4.2vw, 60px);
+  line-height: 1.02;
+  letter-spacing: -0.055em;
+  font-weight: 850;
+  color: #172239;
+}
+
+.lead {
+  margin: 0 0 28px;
+  max-width: 540px;
+  color: #687a98;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.loginCard {
+  padding: 28px;
+  border: 1px solid #d8e1ef;
+  border-top: 4px solid #2d72ee;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 22px 55px rgba(27, 57, 103, 0.08);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.userIcon {
+  width: 54px;
+  height: 54px;
+  flex: 0 0 54px;
+  border: 1px solid #d3e2f9;
+  border-radius: 16px;
+  background: #eff5ff;
+  color: #1768e8;
+}
+
+.userIcon svg {
+  width: 25px;
+  height: 25px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.eyebrow {
+  display: block;
+  margin-bottom: 4px;
+  color: #7688a6;
+  font-size: 9px;
+  font-weight: 850;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.cardHeader h2 {
+  margin: 0;
+  color: #182238;
+  font-size: 22px;
+  letter-spacing: -0.03em;
+}
+
+.cardDescription {
+  margin: 21px 0 24px;
+  color: #6d7e9a;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.workspaceBox {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-bottom: 18px;
+  padding: 14px 16px;
+  border: 1px solid #dae4f3;
+  border-radius: 15px;
+  background: #f8faff;
+}
+
+.workspaceShield {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  border-radius: 12px;
+  background: #eaf2ff;
+  color: #1d6dea;
+}
+
+.workspaceShield svg {
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.workspaceBox div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.workspaceBox strong {
+  color: #31415e;
+  font-size: 12px;
+}
+
+.workspaceBox span {
+  color: #7a89a1;
+  font-size: 11px;
+}
+
+.googleButton {
+  position: relative;
+  width: 100%;
+  height: 56px;
+  display: grid;
+  grid-template-columns: 34px 1fr 24px;
+  align-items: center;
+  gap: 10px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #347cf1 0%, #1764e9 100%);
+  box-shadow: 0 11px 24px rgba(23, 100, 233, 0.2);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 780;
+  transition: transform 150ms ease, box-shadow 150ms ease, filter 150ms ease;
+}
+
+.googleButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 28px rgba(23, 100, 233, 0.25);
+  filter: saturate(1.04);
+}
+
+.googleButton:active {
+  transform: translateY(0);
+}
+
+.googleMark {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  background: #fff;
+}
+
+.googleMark svg {
+  width: 18px;
+  height: 18px;
+}
+
+.arrow {
+  display: grid;
+  place-items: center;
+}
+
+.arrow svg {
+  width: 21px;
+  height: 21px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.foundationNotice {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  margin-top: 14px;
+  padding: 11px 13px;
+  border: 1px solid #d5e3f7;
+  border-radius: 12px;
+  background: #f4f8ff;
+  color: #5d7190;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.foundationNotice svg {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  margin-top: 1px;
+  fill: none;
+  stroke: #1d6dea;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.accessNote {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+  padding: 13px 15px;
+  border: 1px solid #dae3ef;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.68);
+  color: #6d7e98;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.accessNote svg {
+  width: 17px;
+  height: 17px;
+  flex: 0 0 17px;
+  fill: none;
+  stroke: #1d6dea;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding-top: 28px;
+  color: #91a0b7;
+  font-size: 10px;
+}
+
+.footerDot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #b4c0d0;
+}
+
+@media (max-width: 980px) {
+  .page {
+    grid-template-columns: 1fr;
+    overflow: visible;
+  }
+
+  .brandPanel {
+    min-height: auto;
+    padding: 34px 30px 38px;
+  }
+
+  .brandMessage {
+    margin-top: 48px;
+  }
+
+  .brandMessage h2 {
+    max-width: 560px;
+    font-size: 42px;
+  }
+
+  .brandMessage p {
+    max-width: 600px;
+  }
+
+  .brandVersion {
+    display: none;
+  }
+
+  .accessPanel {
+    min-height: auto;
+    padding: 72px 26px 30px;
+  }
+
+  .language {
+    top: 20px;
+    right: 22px;
+  }
+
+  .accessContent {
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 620px) {
+  .brandPanel {
+    padding: 26px 22px 30px;
+  }
+
+  .logo {
+    width: 62px;
+    height: 62px;
+  }
+
+  .brandMeta strong {
+    font-size: 28px;
+  }
+
+  .brandMessage {
+    margin-top: 38px;
+  }
+
+  .brandMessage h2 {
+    font-size: 35px;
+  }
+
+  .statusPill {
+    margin-top: 28px;
+  }
+
+  .accessPanel {
+    padding: 66px 18px 24px;
+  }
+
+  .accessContent > h1 {
+    font-size: 40px;
+  }
+
+  .loginCard {
+    padding: 22px 18px;
+    border-radius: 20px;
+  }
+
+  .footer {
+    flex-wrap: wrap;
+  }
+}
+
+/* =========================================================
+   v2.0.18.0 — local development workspace bridge
+   ========================================================= */
+
+.previewArea {
+  margin-top: 18px;
+}
+
+.previewDivider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 2px 0 12px;
+  color: #9aa8bb;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.previewDivider::before,
+.previewDivider::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: #e3e9f2;
+}
+
+.previewButton {
+  width: 100%;
+  min-height: 44px;
+  border: 1px dashed #c8d5e8;
+  border-radius: 12px;
+  background: #fbfcff;
+  color: #526783;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 760;
+  transition: 150ms ease;
+}
+
+.previewButton:hover:not(:disabled) {
+  border-color: #9cb8df;
+  background: #f5f9ff;
+  color: #245fae;
+}
+
+.previewButton:disabled {
+  cursor: wait;
+  opacity: 0.68;
+}
+
+.previewArea p {
+  margin: 8px 2px 0;
+  color: #93a0b3;
+  font-size: 10px;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.previewError {
+  margin-top: 10px;
+  padding: 9px 11px;
+  border: 1px solid #f3c5c5;
+  border-radius: 10px;
+  background: #fff7f7;
+  color: #a43f3f;
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+/* =========================================================
+   v2.1.0 — live Google Workspace SSO states
+   ========================================================= */
+
+.googleButton:disabled {
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  filter: grayscale(0.2);
+  opacity: 0.58;
+}
+
+.authError,
+.configNotice {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  margin-top: 14px;
+  padding: 11px 13px;
+  border-radius: 12px;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.authError {
+  border: 1px solid #f0c4c4;
+  background: #fff7f7;
+  color: #9b3d3d;
+}
+
+.configNotice {
+  border: 1px solid #ead8ae;
+  background: #fffaf0;
+  color: #806127;
+}
+
+.authError svg,
+.configNotice svg {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  margin-top: 1px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.configReady {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 14px;
+  padding: 12px 14px;
+  border: 1px solid #bbf7d0;
+  border-radius: 14px;
+  background: #f0fdf4;
+  color: #166534;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.configReady svg {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+}

@@ -1,0 +1,48 @@
+html[data-locale="th"] body,
+html[data-locale="lo"] body {
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Noto Sans Thai",
+    "Noto Sans Lao",
+    "Thonburi",
+    "Leelawadee UI",
+    "Segoe UI",
+    sans-serif;
+}
+
+.qbms-language-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 38px;
+  padding: 0 8px 0 9px;
+  border: 1px solid var(--qbms-border);
+  border-radius: 11px;
+  background: #fff;
+  color: #5d6d84;
+}
+
+.qbms-language-control select {
+  min-width: 78px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #42536b;
+  font-size: 9px;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+html[data-locale="th"] .qbms-language-control select,
+html[data-locale="lo"] .qbms-language-control select {
+  font-size: 10px;
+}
+
+@media (max-width: 760px) {
+  .qbms-language-control {
+    display: none;
+  }
+}

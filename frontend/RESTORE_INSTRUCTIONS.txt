@@ -1,0 +1,23 @@
+Q BMS v2.0.4.0 FRONTEND FULL RESTORE
+
+This archive is rooted at the frontend directory.
+
+Safest restore method from Terminal:
+
+1) Stop the frontend dev server with Control + C.
+
+2) Run:
+   cd "/Users/ton/Development/Q BMS/frontend"
+
+3) Assuming this ZIP is in Downloads, run:
+   unzip -o ~/Downloads/Q_BMS_v2.0.4.0_FRONTEND_FULL_RESTORE.zip -d .
+
+4) Then run:
+   npm install
+   rm -rf .next
+   npm run dev
+
+5) Open:
+   http://localhost:3000
+
+This method overwrites files individually and DOES NOT delete other existing frontend files.

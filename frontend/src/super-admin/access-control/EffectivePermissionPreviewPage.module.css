@@ -1,0 +1,427 @@
+.page {
+  display: grid;
+  gap: 16px;
+}
+
+.hero {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  border: 1px solid #dbe6f3;
+  border-radius: 18px;
+  background: linear-gradient(105deg, #fff 0%, #f8fbff 55%, #edf8ff 100%);
+  padding: 24px;
+}
+
+.eyebrow,
+.kicker {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: #0969da;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .14em;
+}
+
+.hero h2,
+.tableHead h3 {
+  margin: 0;
+  color: #17243d;
+}
+
+.hero h2 {
+  font-size: 26px;
+}
+
+.hero p {
+  max-width: 720px;
+  margin: 7px 0 0;
+  color: #8190a7;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.heroRight {
+  display: grid;
+  justify-items: end;
+  gap: 12px;
+}
+
+.rulePills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.rulePills span {
+  border: 1px solid #d7e5f7;
+  border-radius: 999px;
+  background: rgba(255,255,255,.9);
+  color: #48627f;
+  padding: 7px 10px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.backLink {
+  color: #1768c6;
+  font-size: 12px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.error {
+  border: 1px solid #ffd2cc;
+  border-radius: 12px;
+  background: #fff7f5;
+  color: #b43b2f;
+  padding: 12px 14px;
+  font-size: 13px;
+}
+
+.modeCard,
+.tableCard,
+.empty {
+  border: 1px solid #dbe5f1;
+  border-radius: 18px;
+  background: #fff;
+}
+
+.modeCard {
+  padding: 16px;
+}
+
+.modeSwitch {
+  display: inline-flex;
+  border: 1px solid #dce5ef;
+  border-radius: 11px;
+  background: #f7f9fc;
+  padding: 3px;
+}
+
+.modeSwitch button {
+  min-height: 35px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #78889c;
+  padding: 0 15px;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.modeSwitch .activeMode {
+  background: #fff;
+  color: #1267e8;
+  box-shadow: 0 1px 5px rgba(38, 72, 112, .12);
+}
+
+.actualSelector {
+  display: grid;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.actualSelector label,
+.simulationInputs label {
+  color: #718399;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+
+.actualSelector select,
+.simulationInputs select {
+  display: block;
+  width: 100%;
+  min-height: 42px;
+  margin-top: 7px;
+  border: 1px solid #d7e1ed;
+  border-radius: 11px;
+  background: #fff;
+  color: #30445f;
+  padding: 0 12px;
+}
+
+.identitySummary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.identitySummary div {
+  border: 1px solid #e1e9f3;
+  border-radius: 12px;
+  background: #f8fbff;
+  padding: 13px;
+}
+
+.identitySummary span,
+.identitySummary small {
+  display: block;
+  color: #8797ab;
+  font-size: 10px;
+}
+
+.identitySummary strong {
+  display: block;
+  margin: 5px 0 3px;
+  color: #2e435f;
+  font-size: 13px;
+}
+
+.simulationArea {
+  display: grid;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.simulationInputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 12px;
+  align-items: end;
+}
+
+.runButton {
+  min-height: 42px;
+  border: 0;
+  border-radius: 11px;
+  background: #1267e8;
+  color: #fff;
+  padding: 0 16px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.runButton:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+
+.roleChooser {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.roleChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  border: 1px solid #dce5ef;
+  border-radius: 999px;
+  background: #fff;
+  color: #718399;
+  padding: 0 11px;
+  font-size: 10px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.roleChipActive {
+  border-color: #a8c8f4;
+  background: #eef6ff;
+  color: #1768c6;
+}
+
+.roleChip small {
+  color: #97a5b6;
+  font-size: 8px;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.metrics article {
+  border: 1px solid #dbe5f1;
+  border-radius: 16px;
+  background: #fff;
+  padding: 18px;
+}
+
+.metrics span,
+.metrics small {
+  display: block;
+  color: #8a9ab0;
+  font-size: 11px;
+}
+
+.metrics strong {
+  display: block;
+  margin: 8px 0 4px;
+  color: #1c2c47;
+  font-size: 27px;
+}
+
+.tableCard {
+  overflow: hidden;
+}
+
+.tableHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.tableHead h3 {
+  font-size: 17px;
+}
+
+.filterToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #6f8196;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.permissionTable {
+  overflow-x: auto;
+}
+
+.permissionRow {
+  display: grid;
+  grid-template-columns: minmax(260px, 1.8fr) 1fr .7fr .8fr 1.2fr;
+  gap: 12px;
+  align-items: center;
+  min-width: 940px;
+  border-bottom: 1px solid #eef2f6;
+  padding: 12px 18px;
+}
+
+.headerRow {
+  background: #f8fafc;
+  color: #7c8da2;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.permissionName strong,
+.permissionName small,
+.permissionName em {
+  display: block;
+}
+
+.permissionName strong {
+  color: #30445f;
+  font-size: 12px;
+}
+
+.permissionName small {
+  margin-top: 3px;
+  color: #98a6b7;
+  font-size: 10px;
+}
+
+.permissionName em {
+  margin-top: 5px;
+  color: #607792;
+  font-size: 8px;
+  font-style: normal;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.permissionRow i {
+  color: #a6b1bf;
+  font-size: 10px;
+  font-style: normal;
+}
+
+.grantBadge,
+.revokeBadge,
+.effectiveYes,
+.effectiveNo {
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 5px 7px;
+  font-size: 9px;
+  font-weight: 900;
+}
+
+.grantBadge,
+.effectiveYes {
+  background: #eaf8f1;
+  color: #2f7c58;
+}
+
+.revokeBadge,
+.effectiveNo {
+  background: #fff0ee;
+  color: #ae4c42;
+}
+
+.sourceText {
+  display: block;
+  margin-top: 5px;
+  color: #8b9aab;
+  font-size: 9px;
+  line-height: 1.4;
+}
+
+.empty {
+  display: flex;
+  min-height: 280px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 9px;
+  color: #91a0b5;
+  text-align: center;
+}
+
+.empty strong {
+  color: #536880;
+}
+
+.empty span {
+  font-size: 11px;
+}
+
+@media (max-width: 1100px) {
+  .metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .simulationInputs {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .runButton {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 760px) {
+  .hero {
+    flex-direction: column;
+  }
+
+  .heroRight {
+    justify-items: start;
+  }
+
+  .rulePills {
+    justify-content: flex-start;
+  }
+
+  .identitySummary,
+  .metrics,
+  .simulationInputs {
+    grid-template-columns: 1fr;
+  }
+}

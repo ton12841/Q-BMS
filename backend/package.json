@@ -1,0 +1,20 @@
+{
+  "name": "q-bms-backend",
+  "private": true,
+  "version": "2.3.3.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node src/server.js",
+    "start": "node src/server.js",
+    "dev:watch": "node --watch src/server.js",
+    "test": "node scripts/run_unit_tests.mjs",
+    "verify": "node scripts/verify_architecture.mjs && node scripts/run_unit_tests.mjs"
+  },
+  "dependencies": {
+    "cors": "2.8.6",
+    "dotenv": "17.4.2",
+    "express": "5.2.1",
+    "helmet": "8.3.0",
+    "pg": "8.23.0"
+  }
+}

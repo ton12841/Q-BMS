@@ -1,0 +1,528 @@
+.page {
+  display: grid;
+  gap: 16px;
+}
+
+.hero {
+  display: flex;
+  justify-content: space-between;
+  gap: 22px;
+  border: 1px solid #dbe6f3;
+  border-radius: 18px;
+  background: linear-gradient(105deg, #fff 0%, #f8fbff 54%, #edf8ff 100%);
+  padding: 24px;
+}
+
+.eyebrow,
+.kicker {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: #0969da;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .13em;
+}
+
+.hero h2,
+.panelHead h3,
+.editorHead h3,
+.permissionHead h3 {
+  margin: 0;
+  color: #17243d;
+}
+
+.hero h2 {
+  font-size: 27px;
+}
+
+.hero p,
+.editorHead p,
+.permissionHead p {
+  max-width: 760px;
+  margin: 7px 0 0;
+  color: #8190a7;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.heroActions {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.backLink {
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  color: #1768c6;
+  font-size: 10px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.primaryButton,
+.secondaryButton {
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-radius: 10px;
+  padding: 0 13px;
+  font-size: 10px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.primaryButton {
+  border: 0;
+  background: #1267e8;
+  color: #fff;
+}
+
+.secondaryButton {
+  border: 1px solid #d7e2ee;
+  background: #fff;
+  color: #617891;
+}
+
+.primaryButton:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+.error,
+.notice,
+.protectedNote,
+.lockedNote,
+.infoNote {
+  border-radius: 12px;
+  padding: 11px 13px;
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.error {
+  border: 1px solid #ffd2cc;
+  background: #fff7f5;
+  color: #b43b2f;
+}
+
+.notice {
+  border: 1px solid #cdebdc;
+  background: #f4fcf8;
+  color: #277754;
+}
+
+.protectedNote {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 14px;
+  background: #fff2ef;
+  color: #aa4c42;
+}
+
+.lockedNote,
+.infoNote {
+  display: grid;
+  gap: 3px;
+  margin: 14px;
+  background: #f4f8fc;
+  color: #637994;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.metrics article {
+  border: 1px solid #dce6f1;
+  border-radius: 15px;
+  background: #fff;
+  padding: 15px;
+}
+
+.metrics span {
+  display: block;
+  color: #8a9aaf;
+  font-size: 10px;
+}
+
+.metrics strong {
+  display: block;
+  margin-top: 7px;
+  color: #213650;
+  font-size: 24px;
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(280px, .72fr) minmax(0, 2fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.rolePanel,
+.editorPanel {
+  overflow: hidden;
+  border: 1px solid #dbe5f1;
+  border-radius: 18px;
+  background: #fff;
+}
+
+.rolePanel {
+  min-height: 650px;
+}
+
+.editorPanel {
+  min-height: 720px;
+}
+
+.panelHead,
+.editorHead,
+.permissionHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 18px;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.panelHead h3,
+.editorHead h3,
+.permissionHead h3 {
+  font-size: 16px;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding: 10px 10px 0;
+}
+
+.filters button,
+.groupHead button {
+  border: 1px solid #dce5ef;
+  border-radius: 8px;
+  background: #fff;
+  color: #718399;
+  padding: 6px 8px;
+  font-size: 8px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.filters .activeFilter {
+  border-color: #a9c9f4;
+  background: #eef6ff;
+  color: #1267e8;
+}
+
+.searchInput,
+.permissionSearch,
+.formGrid input,
+.formGrid textarea,
+.formGrid select {
+  width: 100%;
+  border: 1px solid #dce5ef;
+  border-radius: 10px;
+  background: #fff;
+  color: #344a65;
+  font: inherit;
+}
+
+.searchInput {
+  width: calc(100% - 20px);
+  margin: 9px 10px;
+  padding: 10px 11px;
+  font-size: 10px;
+}
+
+.roleList {
+  display: grid;
+  gap: 5px;
+  padding: 0 9px 10px;
+}
+
+.roleRow {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: transparent;
+  padding: 10px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.roleRow:hover {
+  background: #f7faff;
+}
+
+.selectedRole {
+  border-color: #c7dcfa;
+  background: #eff6ff;
+}
+
+.roleAvatar {
+  display: inline-flex;
+  width: 38px;
+  height: 38px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: #eaf3ff;
+  color: #1267e8;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.roleRowCopy {
+  min-width: 0;
+}
+
+.roleRowCopy strong,
+.roleRowCopy small {
+  display: block;
+}
+
+.roleRowCopy strong {
+  color: #2e425e;
+  font-size: 11px;
+}
+
+.roleRowCopy small {
+  margin-top: 2px;
+  color: #8c9bad;
+  font-size: 8px;
+}
+
+.roleRowCopy > span {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 5px;
+}
+
+.roleRowCopy em {
+  border-radius: 999px;
+  background: #eef3f8;
+  color: #6a7f98;
+  padding: 3px 5px;
+  font-size: 7px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.roleRow > b {
+  color: #6f849d;
+  font-size: 10px;
+}
+
+.empty,
+.emptyEditor {
+  color: #91a0b3;
+  text-align: center;
+}
+
+.empty {
+  padding: 30px 12px;
+  font-size: 10px;
+}
+
+.emptyEditor {
+  display: flex;
+  min-height: 600px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.formSection {
+  padding: 15px 18px;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 11px;
+}
+
+.formGrid label > span {
+  display: block;
+  margin-bottom: 5px;
+  color: #6d8199;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.formGrid input,
+.formGrid textarea,
+.formGrid select {
+  padding: 10px;
+  font-size: 10px;
+}
+
+.formGrid input:disabled,
+.formGrid textarea:disabled,
+.formGrid select:disabled {
+  background: #f5f7fa;
+  color: #8b98a8;
+}
+
+.formGrid small {
+  display: block;
+  margin-top: 4px;
+  color: #95a2b2;
+  font-size: 8px;
+}
+
+.fullField {
+  grid-column: 1 / -1;
+}
+
+.permissionSection {
+  border-bottom: 1px solid #edf2f7;
+}
+
+.permissionHead {
+  align-items: flex-start;
+}
+
+.permissionSearch {
+  width: 230px;
+  padding: 9px 10px;
+  font-size: 9px;
+}
+
+.permissionGroups {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+}
+
+.permissionGroup {
+  overflow: hidden;
+  border: 1px solid #e0e8f1;
+  border-radius: 13px;
+}
+
+.groupHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border-bottom: 1px solid #edf2f7;
+  background: #f9fbfd;
+  padding: 10px 12px;
+}
+
+.groupHead strong {
+  color: #405774;
+  font-size: 10px;
+}
+
+.groupHead small {
+  margin-left: 7px;
+  color: #94a1b1;
+  font-size: 8px;
+}
+
+.groupHead > div:last-child {
+  display: flex;
+  gap: 5px;
+}
+
+.permissionList {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.permissionRow {
+  display: flex;
+  gap: 8px;
+  min-height: 82px;
+  border-right: 1px solid #edf2f7;
+  border-bottom: 1px solid #edf2f7;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.permissionSelected {
+  background: #f3f8ff;
+}
+
+.permissionRow input {
+  margin-top: 2px;
+}
+
+.permissionRow span {
+  min-width: 0;
+}
+
+.permissionRow strong,
+.permissionRow small {
+  display: block;
+}
+
+.permissionRow strong {
+  color: #354b66;
+  font-size: 10px;
+}
+
+.permissionRow small {
+  margin-top: 2px;
+  color: #7d8fa5;
+  font-size: 8px;
+  overflow-wrap: anywhere;
+}
+
+.permissionRow p {
+  margin: 5px 0 0;
+  color: #95a1b0;
+  font-size: 8px;
+  line-height: 1.45;
+}
+
+.saveBar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 14px 18px;
+}
+
+@media (max-width: 1120px) {
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .hero,
+  .editorHead,
+  .permissionHead {
+    flex-direction: column;
+  }
+
+  .metrics,
+  .formGrid,
+  .permissionList {
+    grid-template-columns: 1fr;
+  }
+
+  .fullField {
+    grid-column: auto;
+  }
+
+  .permissionSearch {
+    width: 100%;
+  }
+}

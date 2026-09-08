@@ -1,0 +1,325 @@
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 22px 24px;
+  border: 1px solid #dfe8f4;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 90% -15%, rgba(31, 192, 245, 0.13), transparent 34%),
+    linear-gradient(135deg, #ffffff 0%, #f9fcff 100%);
+  box-shadow: 0 8px 30px rgba(42, 66, 102, 0.06);
+}
+
+.hero h2 {
+  margin: 6px 0;
+  color: #1d2d45;
+  font-size: 24px;
+  letter-spacing: -0.03em;
+}
+
+.hero p {
+  max-width: 720px;
+  margin: 0;
+  color: #7a889b;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.viewOnly {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 12px;
+  border: 1px solid #e0e8f2;
+  border-radius: 999px;
+  background: white;
+  color: #7c899a;
+  font-size: 10px;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.statCard {
+  min-height: 92px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 15px 17px;
+  border: 1px solid #e4eaf2;
+  border-radius: 14px;
+  background: white;
+}
+
+.statCard > span {
+  color: #7d8b9e;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+.statCard strong {
+  margin-top: 5px;
+  color: #1f3150;
+  font-size: 25px;
+  line-height: 1;
+}
+
+.statCard small {
+  margin-top: 6px;
+  color: #9ba7b6;
+  font-size: 11px;
+}
+
+.notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  margin-top: 12px;
+  padding: 13px 15px;
+  border: 1px solid #dceaf6;
+  border-radius: 13px;
+  background: #f7fbff;
+}
+
+.noticeIcon {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 30px;
+  border-radius: 9px;
+  color: #0d6bdc;
+  background: #e7f2ff;
+}
+
+.notice strong {
+  color: #35465e;
+  font-size: 12px;
+  vertical-align: middle;
+}
+
+.notice p {
+  margin: 5px 0 0;
+  color: #7d8b9e;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.levelList {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.levelCard {
+  border: 1px solid #e4eaf2;
+  border-radius: 16px;
+  background: white;
+  overflow: hidden;
+}
+
+.levelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 17px;
+  border-bottom: 1px solid #e8edf4;
+  background: linear-gradient(180deg, #ffffff, #fbfdff);
+}
+
+.levelIdentity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.levelCode {
+  min-width: 72px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
+  padding: 0 10px;
+  border-radius: 9px;
+  color: #0d5bd7;
+  background: #edf5ff;
+  font-size: 11px;
+  font-weight: 820;
+  white-space: nowrap;
+}
+
+.levelIdentity h3 {
+  margin: 0;
+  color: #26364e;
+  font-size: 14px;
+}
+
+.levelIdentity p {
+  margin: 3px 0 0;
+  color: #97a3b2;
+  font-size: 11px;
+}
+
+.activePill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0 9px;
+  border-radius: 999px;
+  color: #137458;
+  background: #ebf9f4;
+  font-size: 10px;
+  font-weight: 820;
+}
+
+.gradeTableWrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.gradeTable {
+  width: 100%;
+  min-width: 720px;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.gradeTable th:nth-child(1),
+.gradeTable td:nth-child(1) {
+  width: 14%;
+}
+
+.gradeTable th:nth-child(2),
+.gradeTable td:nth-child(2) {
+  width: 36%;
+}
+
+.gradeTable th:nth-child(3),
+.gradeTable td:nth-child(3) {
+  width: 25%;
+}
+
+.gradeTable th:nth-child(4),
+.gradeTable td:nth-child(4) {
+  width: 25%;
+}
+
+.gradeTable th {
+  padding: 11px 15px;
+  border-bottom: 1px solid #e8edf4;
+  background: #f8fafc;
+  color: #7e8c9f;
+  font-size: 10px;
+  font-weight: 780;
+  letter-spacing: 0.04em;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.gradeTable td {
+  padding: 14px 15px;
+  border-bottom: 1px solid #edf1f5;
+  color: #596a80;
+  font-size: 12px;
+}
+
+.gradeTable tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.gradeTable tbody tr:hover td {
+  background: #fbfdff;
+}
+
+.gradeBadge {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  color: white;
+  background: linear-gradient(135deg, #1768e8, #0c53c9);
+  font-size: 11px;
+  font-weight: 850;
+  box-shadow: 0 5px 12px rgba(13, 91, 215, 0.16);
+}
+
+.gradeName {
+  color: #33445c;
+  font-size: 12px;
+  font-weight: 730;
+}
+
+.criteriaText {
+  color: #6e7d91;
+  font-size: 11px;
+}
+
+.stateCard {
+  min-height: 230px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 12px;
+  padding: 24px;
+  border: 1px solid #e4eaf2;
+  border-radius: 16px;
+  background: white;
+  color: #8a97a8;
+  text-align: center;
+}
+
+.stateCard strong {
+  color: #46566d;
+  font-size: 13px;
+}
+
+.stateCard p,
+.stateCard small {
+  margin: 0;
+  font-size: 11px;
+}
+
+.error {
+  color: #9c625e;
+  background: #fffafa;
+}
+
+.spinner {
+  width: 25px;
+  height: 25px;
+  border: 2px solid #e2e9f2;
+  border-top-color: #0d5bd7;
+  border-radius: 50%;
+  animation: spin 800ms linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 850px) {
+  .hero {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .stats {
+    grid-template-columns: 1fr;
+  }
+}

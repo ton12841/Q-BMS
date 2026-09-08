@@ -1,0 +1,52 @@
+# Dependencies and build output
+node_modules/
+frontend/.next/
+backend/dist/
+dist/
+build/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+backend/.env
+backend/.env.*
+!backend/.env.example
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+
+# Q BMS local patch/runtime state
+.qbms_patch_backup/
+.qbms_patch_stage*/
+.qbms_last_patch_backup
+
+# OS / editor / logs
+.DS_Store
+*.log
+.vscode/*.log
+
+# Dependencies / build
+node_modules/
+.next/
+dist/
+build/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# macOS
+.DS_Store
+
+# Q BMS patch runtime
+.qbms_patch_backup/
+.qbms_patch_stage*/
+.qbms_last_patch_backup
+
+# Logs
+*.log
+
+# Patch packages
+*.zip

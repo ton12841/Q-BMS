@@ -1,0 +1,137 @@
+.root {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+
+.trigger {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e3e9f1;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #64748b;
+  cursor: pointer;
+  box-shadow:
+    0 2px 5px rgba(15, 23, 42, 0.05),
+    0 10px 24px rgba(15, 23, 42, 0.05);
+  transition:
+    background 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease,
+    box-shadow 150ms ease,
+    transform 150ms ease;
+}
+
+.trigger:hover,
+.triggerOpen {
+  color: #334155;
+  border-color: #d4dde9;
+  background: #f8fafc;
+  box-shadow:
+    0 3px 8px rgba(15, 23, 42, 0.08),
+    0 12px 28px rgba(15, 23, 42, 0.08);
+}
+
+.trigger:active {
+  transform: translateY(1px);
+}
+
+.trigger:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.16);
+  outline-offset: 2px;
+}
+
+.menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 1000;
+  width: 158px;
+  padding: 8px;
+  border: 1px solid #dfe5ec;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow:
+    0 16px 36px rgba(15, 23, 42, 0.14),
+    0 3px 10px rgba(15, 23, 42, 0.08);
+  transform-origin: top right;
+  animation: languageMenuIn 130ms ease-out;
+}
+
+.option {
+  width: 100%;
+  min-height: 50px;
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) 18px;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 8px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: #1f2937;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background 120ms ease,
+    color 120ms ease;
+}
+
+.option:hover {
+  background: #f5f7fa;
+}
+
+.option.active {
+  background: #f7faff;
+  color: #0f4fbf;
+}
+
+.flag {
+  width: 28px;
+  height: 28px;
+  display: block;
+  border-radius: 999px;
+  box-shadow:
+    0 0 0 1px rgba(15, 23, 42, 0.08),
+    0 1px 2px rgba(15, 23, 42, 0.08);
+}
+
+.label {
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.2;
+  color: inherit;
+  white-space: nowrap;
+}
+
+.check {
+  min-width: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #2563eb;
+}
+
+@keyframes languageMenuIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 760px) {
+  .menu {
+    position: fixed;
+    top: 66px;
+    right: 14px;
+  }
+}
