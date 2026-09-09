@@ -254,12 +254,35 @@ export default function QaDataModePageClient() {
 
   useEffect(() => {
     const controller = new AbortController();
-    fetchAuthSession(controller.signal)
-      .then(setSession)
+    let active = true;
+
+    void fetchAuthSession(controller.signal)
+      .then((nextSession) => {
+        if (active) setSession(nextSession);
+      })
+      .catch((error) => {
+        // React Strict Mode / Next.js Fast Refresh intentionally mounts and
+        // immediately unmounts effects in development. Aborting the request
+        // during that cleanup is expected and must never surface as a runtime
+        // error overlay.
+        if (
+          controller.signal.aborted ||
+          (error instanceof DOMException && error.name === "AbortError")
+        ) {
+          return;
+        }
+
+        console.error("QA Data Mode auth session request failed.", error);
+        if (active) setSession(null);
+      })
       .finally(() => {
-        if (!controller.signal.aborted) setLoading(false);
+        if (active) setLoading(false);
       });
-    return () => controller.abort();
+
+    return () => {
+      active = false;
+      controller.abort();
+    };
   }, []);
 
   const rows = useMemo(() => {

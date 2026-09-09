@@ -16,7 +16,7 @@ function assert(condition, message) {
 const rootPackage = JSON.parse(await read('package.json'));
 const backendPackage = JSON.parse(await read('backend/package.json'));
 const frontendPackage = JSON.parse(await read('frontend/package.json'));
-const expectedVersion = '2.3.3.0';
+const expectedVersion = '2.3.3.3';
 
 assert(rootPackage.version === expectedVersion, 'Root package version is not synchronized.');
 assert(backendPackage.version === expectedVersion, 'Backend package version is not synchronized.');
@@ -51,7 +51,7 @@ assert(workspaceRepo.includes('employee_reporting_lines'), 'Employee Workspace d
 assert(workspaceRepo.includes('LEGACY_MANAGER_FALLBACK'), 'Temporary legacy Manager fallback marker is missing.');
 
 const appShell = await read('frontend/src/components/layout/QBMSAppShell.tsx');
-assert(appShell.includes('v2.3.3.0'), 'Frontend App Shell version is not v2.3.3.0.');
+assert(appShell.includes('v2.3.3.3'), 'Frontend App Shell version is not v2.3.3.3.');
 assert(appShell.includes('handleModulesToolsClickCapture'), 'Super Admin entry regression detected.');
 assert(appShell.includes('!pathname?.startsWith("/super-admin")'), 'Super Admin active-state regression detected.');
 
@@ -316,6 +316,36 @@ assert(
   moduleLandingRoute.includes('ModuleLandingPageClient'),
   'Generic module real-data landing route is missing.'
 );
+
+
+const qaRuntimePage = await read(
+  'frontend/src/qa/module-data/QaDataModePageClient.tsx'
+);
+assert(
+  qaRuntimePage.includes('error instanceof DOMException && error.name === "AbortError"'),
+  'QA Data Mode does not safely handle expected AbortError cleanup.'
+);
+assert(
+  qaRuntimePage.includes('let active = true'),
+  'QA Data Mode unmount guard is missing.'
+);
+
+const globalCss = await read('frontend/src/app/globals.css');
+for (const typographyTokenName of [
+  '--qbms-font-caption:',
+  '--qbms-font-meta:',
+  '--qbms-font-small:',
+  '--qbms-font-body:',
+  '--qbms-font-card-title:',
+  '--qbms-font-section-title:',
+  '--qbms-font-page-title:',
+  '--qbms-font-display:',
+]) {
+  assert(
+    globalCss.includes(typographyTokenName),
+    `Platform typography token missing ${typographyTokenName}.`
+  );
+}
 
 const backendLock = JSON.parse(await read('backend/package-lock.json'));
 const frontendLock = JSON.parse(await read('frontend/package-lock.json'));

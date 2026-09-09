@@ -17,14 +17,14 @@
   --qbms-shadow: 0 8px 30px rgba(42, 66, 102, 0.06);
 
   /* Q BMS Typography Scale */
-  --qbms-font-caption: 10px;
-  --qbms-font-meta: 11px;
-  --qbms-font-small: 12px;
-  --qbms-font-body: 13px;
-  --qbms-font-card-title: 14px;
-  --qbms-font-section-title: 15px;
-  --qbms-font-page-title: 18px;
-  --qbms-font-display: 25px;
+  --qbms-font-caption: 12px;
+  --qbms-font-meta: 13px;
+  --qbms-font-small: 14px;
+  --qbms-font-body: 15px;
+  --qbms-font-card-title: 17px;
+  --qbms-font-section-title: 19px;
+  --qbms-font-page-title: 24px;
+  --qbms-font-display: 30px;
 }
 
 * {
@@ -247,7 +247,7 @@ button {
 
 .qbms-system-status {
   color: rgba(255, 255, 255, 0.66);
-  font-size: 9px;
+  font-size: var(--qbms-font-caption);
 }
 
 .qbms-status-dot {
@@ -1073,7 +1073,7 @@ a {
 }
 
 .qbms-master-header p {
-  font-size: 10px;
+  font-size: var(--qbms-font-small);
 }
 
 .qbms-master-header-actions {
@@ -1481,7 +1481,7 @@ a {
 .qbms-avatar.is-development {
   color: #285988;
   background: linear-gradient(135deg, #dcecff, #bcd9ff);
-  font-size: 9px;
+  font-size: 11px;
   letter-spacing: 0.04em;
 }
 
@@ -1542,4 +1542,45 @@ a {
 .qbms-user-menu > button:disabled {
   cursor: wait;
   opacity: 0.65;
+}
+
+
+/* =========================================================
+   v2.3.3.2 — Typography Readability Polish
+   Keep dense enterprise UI readable without oversized controls.
+   ========================================================= */
+
+.qbms-master-header p,
+.qbms-section-heading-row p,
+.qbms-master-panel-heading p {
+  line-height: 1.6;
+}
+
+.qbms-stat-card > span {
+  font-size: var(--qbms-font-meta);
+}
+
+.qbms-stat-card small,
+.qbms-master-panel-heading > span,
+.qbms-section-heading-row > span {
+  font-size: var(--qbms-font-meta);
+}
+
+.qbms-master-table th {
+  font-size: var(--qbms-font-meta);
+}
+
+.qbms-master-table td {
+  font-size: var(--qbms-font-small);
+}
+
+.qbms-status-pill,
+.qbms-code-chip,
+.qbms-readonly-badge {
+  font-size: var(--qbms-font-caption);
+}
+
+.qbms-breadcrumb,
+.qbms-back-link {
+  font-size: var(--qbms-font-small);
 }

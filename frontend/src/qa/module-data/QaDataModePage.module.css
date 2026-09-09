@@ -28,13 +28,13 @@
 .heroCopy h2 {
   margin: 7px 0 5px;
   color: #20324b;
-  font-size: 22px;
+  font-size: 26px;
 }
 
 .heroCopy p {
   margin: 0;
   color: #75879d;
-  font-size: 11px;
+  font-size: 14px;
   line-height: 1.55;
 }
 
@@ -42,7 +42,7 @@
   display: block;
   margin-top: 7px;
   color: #9a7a32;
-  font-size: 8px;
+  font-size: 13px;
 }
 
 .badges {
@@ -61,7 +61,7 @@
   background: #f8fafc;
   color: #789;
   padding: 0 8px;
-  font-size: 7px;
+  font-size: 12px;
   font-weight: 900;
   letter-spacing: .05em;
 }
@@ -87,7 +87,7 @@
   background: #fff;
   color: #49617c;
   padding: 0 11px;
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 850;
   cursor: pointer;
 }
@@ -98,7 +98,7 @@
   align-items: center;
   border-radius: 999px;
   padding: 0 8px;
-  font-size: 7px;
+  font-size: 12px;
   font-weight: 900;
 }
 
@@ -141,13 +141,13 @@
 
 .qaControls > div > span {
   color: #7c8ea3;
-  font-size: 8px;
+  font-size: 13px;
   font-weight: 850;
 }
 
 .qaControls > strong {
   color: #9a7a32;
-  font-size: 8px;
+  font-size: 12px;
 }
 
 .segmented {
@@ -166,7 +166,7 @@
   background: transparent;
   color: #78899e;
   padding: 0 9px;
-  font-size: 8px;
+  font-size: 12px;
   font-weight: 850;
   cursor: pointer;
 }
@@ -194,14 +194,14 @@
 .metricGrid small {
   display: block;
   color: #8899ac;
-  font-size: 8px;
+  font-size: 13px;
 }
 
 .metricGrid strong {
   display: block;
   margin: 6px 0 3px;
   color: #243b57;
-  font-size: 19px;
+  font-size: 28px;
 }
 
 .previewCard,
@@ -229,7 +229,7 @@
 
 .sectionHead span {
   color: #1267e8;
-  font-size: 7px;
+  font-size: 12px;
   font-weight: 900;
   letter-spacing: .08em;
 }
@@ -237,10 +237,11 @@
 .sectionHead h3 {
   margin: 4px 0 0;
   color: #30465f;
-  font-size: 13px;
+  font-size: 17px;
 }
 
 .rowCount {
+  font-size: 12px !important;
   color: #8191a5 !important;
   letter-spacing: 0 !important;
 }
@@ -265,13 +266,13 @@
 .tableWrap th {
   background: #fafcfe;
   color: #7e90a6;
-  font-size: 8px;
+  font-size: 13px;
   font-weight: 900;
 }
 
 .tableWrap td {
   color: #465c76;
-  font-size: 9px;
+  font-size: 14px;
 }
 
 .dataStatus {
@@ -280,7 +281,7 @@
   align-items: center;
   border-radius: 999px;
   padding: 0 7px;
-  font-size: 7px;
+  font-size: 11px;
   font-weight: 900;
 }
 
@@ -330,7 +331,7 @@
 
 .kanbanHead strong {
   color: #536980;
-  font-size: 8px;
+  font-size: 13px;
 }
 
 .kanbanHead span {
@@ -342,7 +343,7 @@
   border-radius: 999px;
   background: #fff;
   color: #71849a;
-  font-size: 8px;
+  font-size: 12px;
 }
 
 .kanbanBody {
@@ -362,12 +363,12 @@
 
 .kanbanBody strong {
   color: #344c65;
-  font-size: 9px;
+  font-size: 14px;
 }
 
 .kanbanBody span {
   color: #8091a4;
-  font-size: 8px;
+  font-size: 12px;
 }
 
 .orgCanvas {
@@ -379,7 +380,7 @@
   display: flex;
   gap: 16px;
   color: #8191a4;
-  font-size: 8px;
+  font-size: 12px;
 }
 
 .orgLegend span {
@@ -458,7 +459,7 @@
   border-radius: 999px;
   background: #eaf3ff;
   color: #176cc8;
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 900;
 }
 
@@ -469,13 +470,13 @@
 
 .orgCardCopy strong {
   color: #31475f;
-  font-size: 9px;
+  font-size: 14px;
 }
 
 .orgCardCopy span,
 .orgCardCopy small {
   color: #8191a4;
-  font-size: 7.5px;
+  font-size: 12px;
 }
 
 .parentHint,
@@ -483,7 +484,7 @@
 .dottedHint {
   grid-column: 1 / -1;
   color: #8a9aac;
-  font-size: 7px;
+  font-size: 11px;
 }
 
 .topHint {
@@ -520,7 +521,7 @@
 .blocked p {
   max-width: 540px;
   margin: 0;
-  font-size: 10px;
+  font-size: 14px;
   line-height: 1.6;
 }
 
@@ -536,7 +537,7 @@
 }
 
 .rulesCard strong {
-  font-size: 10px;
+  font-size: 14px;
 }
 
 .rulesCard ul {
@@ -545,7 +546,7 @@
   margin: 10px 0 0 19px;
   padding: 0;
   color: #8090a3;
-  font-size: 8.5px;
+  font-size: 13px;
   line-height: 1.5;
 }
 
@@ -561,13 +562,13 @@
   align-items: center;
   gap: 5px;
   color: #7b8da2;
-  font-size: 8px;
+  font-size: 12px;
 }
 
 .noSearchResults {
   padding: 30px;
   color: #8b9aab;
-  font-size: 9px;
+  font-size: 14px;
   text-align: center;
 }
 
