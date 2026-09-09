@@ -362,7 +362,7 @@ export default function QBMSAppShell({
   const superAdminLabel =
     locale === "th"
       ? "ผู้ดูแลระบบ"
-      : locale === "lo" || locale === "la"
+      : locale === "lo"
         ? "ຜູ້ເບິ່ງແຍງລະບົບ"
         : "Super Admin";
 
@@ -491,7 +491,7 @@ export default function QBMSAppShell({
             </span>
             <span className="qbms-footer-copy">
               <strong>Q BMS</strong>
-              <small>v2.3.3.3</small>
+              <small>v2.3.3.4</small>
             </span>
           </div>
 

@@ -18,6 +18,7 @@ import {
 import styles from "./SelfOnboardingPage.module.css";
 
 type Tab = "personal" | "emergency" | "bank" | "documents" | "policy" | "progress";
+type OnboardingFormPayload = Record<string, unknown>;
 
 const COPY = {
   en: {
@@ -95,7 +96,7 @@ export default function SelfOnboardingPageClient() {
 
   useEffect(() => { void load(); }, [load]);
 
-  async function run(action: () => Promise<OnboardingBundle>, success = c.saved) {
+  async function run(action: () => Promise<OnboardingBundle>, success: string = c.saved) {
     setWorking(true); setError(""); setNotice("");
     try { const data = await action(); setBundle(data); setNotice(success); }
     catch (e) { setError(e instanceof Error ? e.message : c.required); }
@@ -146,10 +147,10 @@ export default function SelfOnboardingPageClient() {
 
         <nav className={styles.tabs}>{tabs.map(([key, label]) => <button key={key} className={tab === key ? styles.activeTab : ""} onClick={() => setTab(key)}><span className={taskComplete(bundle, key === "personal" ? "PERSONAL_INFORMATION" : key === "emergency" ? "EMERGENCY_CONTACT" : key === "bank" ? "BANK_INFORMATION" : key === "documents" ? "PERSONAL_DOCUMENTS" : key === "policy" ? "COMPANY_POLICY" : "") ? styles.dotDone : styles.dot} />{label}</button>)}</nav>
 
-        {tab === "personal" ? <PersonalForm c={c} e={e} p={p} disabled={readonly || working} onSave={(payload) => run(() => savePersonal(payload))} /> : null}
-        {tab === "emergency" ? <EmergencyForm c={c} data={emergency} disabled={readonly || working} onSave={(payload) => run(() => saveEmergency(payload))} /> : null}
-        {tab === "bank" ? <BankForm c={c} data={bank} disabled={readonly || working} onSave={(payload) => run(() => saveBank(payload))} /> : null}
-        {tab === "documents" ? <Documents c={c} bundle={bundle} disabled={readonly || working} onAdd={(payload) => run(() => addDocument(payload), c.saved)} /> : null}
+        {tab === "personal" ? <PersonalForm c={c} e={e} p={p} disabled={readonly || working} onSave={(payload: OnboardingFormPayload) => run(() => savePersonal(payload))} /> : null}
+        {tab === "emergency" ? <EmergencyForm c={c} data={emergency} disabled={readonly || working} onSave={(payload: OnboardingFormPayload) => run(() => saveEmergency(payload))} /> : null}
+        {tab === "bank" ? <BankForm c={c} data={bank} disabled={readonly || working} onSave={(payload: OnboardingFormPayload) => run(() => saveBank(payload))} /> : null}
+        {tab === "documents" ? <Documents c={c} bundle={bundle} disabled={readonly || working} onAdd={(payload: OnboardingFormPayload) => run(() => addDocument(payload), c.saved)} /> : null}
         {tab === "policy" ? <Policy c={c} bundle={bundle} disabled={readonly || working} onAccept={() => { if (window.confirm(c.policyConfirm)) void run(() => acknowledgePolicy()); }} /> : null}
         {tab === "progress" ? <Progress c={c} bundle={bundle} employeeTasks={employeeTasks} companyTasks={companyTasks} disabled={readonly || working} onSubmit={() => { if (window.confirm(c.submitConfirm)) void run(() => submitOnboarding(), c.submittedTitle); }} /> : null}
       </section>

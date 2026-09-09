@@ -8,6 +8,6 @@ export function useSuperAdminLocale(): SuperAdminLocale {
   const { locale } = useI18n();
 
   if (locale === "th") return "th";
-  if (locale === "lo" || locale === "la") return "lo";
+  if (locale === "lo") return "lo";
   return "en";
 }

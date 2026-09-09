@@ -16,7 +16,7 @@ function assert(condition, message) {
 const rootPackage = JSON.parse(await read('package.json'));
 const backendPackage = JSON.parse(await read('backend/package.json'));
 const frontendPackage = JSON.parse(await read('frontend/package.json'));
-const expectedVersion = '2.3.3.3';
+const expectedVersion = '2.3.3.4';
 
 assert(rootPackage.version === expectedVersion, 'Root package version is not synchronized.');
 assert(backendPackage.version === expectedVersion, 'Backend package version is not synchronized.');
@@ -51,7 +51,7 @@ assert(workspaceRepo.includes('employee_reporting_lines'), 'Employee Workspace d
 assert(workspaceRepo.includes('LEGACY_MANAGER_FALLBACK'), 'Temporary legacy Manager fallback marker is missing.');
 
 const appShell = await read('frontend/src/components/layout/QBMSAppShell.tsx');
-assert(appShell.includes('v2.3.3.3'), 'Frontend App Shell version is not v2.3.3.3.');
+assert(appShell.includes('v2.3.3.4'), 'Frontend App Shell version is not v2.3.3.4.');
 assert(appShell.includes('handleModulesToolsClickCapture'), 'Super Admin entry regression detected.');
 assert(appShell.includes('!pathname?.startsWith("/super-admin")'), 'Super Admin active-state regression detected.');
 
