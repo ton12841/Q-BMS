@@ -351,6 +351,26 @@ export default function QBMSAppShell({
 
   function openQaDataMode() {
     if (!qaModule) return;
+
+    if (qaModule.key === "organization") {
+      const organizationView =
+        pathname?.startsWith("/organization/business-units")
+          ? "business-units"
+          : pathname?.startsWith("/organization/level-grade")
+            ? "level-grade"
+            : pathname?.startsWith("/organization/positions") ||
+                pathname?.startsWith("/organization/job-families")
+              ? "positions"
+              : pathname?.startsWith("/organization/reporting-lines")
+                ? "reporting-lines"
+                : pathname?.startsWith("/organization/chart")
+                  ? "chart"
+                  : "overview";
+
+      router.push(`/qa-data/organization?view=${organizationView}`);
+      return;
+    }
+
     router.push(`/qa-data/${qaModule.key}`);
   }
 
@@ -491,7 +511,7 @@ export default function QBMSAppShell({
             </span>
             <span className="qbms-footer-copy">
               <strong>Q BMS</strong>
-              <small>v2.3.3.4</small>
+              <small>v2.3.5.2</small>
             </span>
           </div>
 

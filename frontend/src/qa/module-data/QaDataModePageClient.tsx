@@ -14,6 +14,7 @@ import {
   type QaModuleConfig,
 } from "./qaModuleRegistry";
 import styles from "./QaDataModePage.module.css";
+import OrganizationQaWorkspace from "./OrganizationQaWorkspace";
 
 type Scenario = "POPULATED" | "EMPTY";
 
@@ -412,7 +413,9 @@ export default function QaDataModePageClient() {
                 <span className={styles.rowCount}>{rows.length} sample items</span>
               </div>
 
-              {config.previewKind === "organization" ? (
+              {config.key === "organization" ? (
+                <OrganizationQaWorkspace />
+              ) : config.previewKind === "organization" ? (
                 <OrganizationPreview />
               ) : config.previewKind === "kanban" ? (
                 <KanbanPreview config={config} rows={rows} />

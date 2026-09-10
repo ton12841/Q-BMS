@@ -5,6 +5,9 @@ import { organizationChartRouter } from './organization-chart/organization-chart
 import {
   organizationMasterController,
   businessUnitsController,
+  createBusinessUnitController,
+  updateBusinessUnitController,
+  deleteBusinessUnitController,
   jobLevelsController,
   jobGradesController,
   levelGradeStructureController,
@@ -27,6 +30,9 @@ const requireOrganizationManage = requirePermission('organization.master.manage'
 // not exposed by the Organization API until the Department module is activated.
 organizationRouter.get('/master', requireOrganizationView, organizationMasterController);
 organizationRouter.get('/business-units', requireOrganizationView, businessUnitsController);
+organizationRouter.post('/business-units', requireOrganizationManage, createBusinessUnitController);
+organizationRouter.put('/business-units/:id', requireOrganizationManage, updateBusinessUnitController);
+organizationRouter.delete('/business-units/:id', requireOrganizationManage, deleteBusinessUnitController);
 organizationRouter.get('/job-levels', requireOrganizationView, jobLevelsController);
 organizationRouter.get('/job-grades', requireOrganizationView, jobGradesController);
 organizationRouter.get('/level-grades', requireOrganizationView, levelGradeStructureController);

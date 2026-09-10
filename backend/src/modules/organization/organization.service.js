@@ -1,6 +1,12 @@
 
 import {
   listBusinessUnits,
+  getBusinessUnitById,
+  insertBusinessUnit,
+  updateBusinessUnitRecord,
+  getBusinessUnitUsage,
+  deleteBusinessUnitRecord,
+  insertOrganizationAuditLog,
   listJobLevels,
   listJobGrades,
   listJobFamilies,
@@ -41,6 +47,130 @@ export async function getOrganizationMaster({ locale = 'en' } = {}) {
 export async function getBusinessUnits({ locale = 'en' } = {}) {
   return listBusinessUnits({ locale });
 }
+
+function normalizeBusinessUnitPayload(payload = {}) {
+  const code = String(payload.code || '')
+    .trim()
+    .toUpperCase()
+    .replace(/\s+/g, '_');
+
+  const name = String(payload.name || '').trim();
+  const description = String(payload.description || '').trim() || null;
+  const status = String(payload.status || 'ACTIVE').trim().toUpperCase();
+  const sortOrder = Number(payload.sort_order ?? payload.sortOrder ?? 0);
+
+  if (!code) throw validationError('Business Unit code is required.');
+  if (!name) throw validationError('Business Unit name is required.');
+  if (!/^[A-Z0-9_-]+$/.test(code)) {
+    throw validationError('Business Unit code may contain only A-Z, 0-9, underscore and hyphen.');
+  }
+  if (!['ACTIVE', 'INACTIVE'].includes(status)) {
+    throw validationError('Invalid Business Unit status.');
+  }
+  if (!Number.isInteger(sortOrder) || sortOrder < 0) {
+    throw validationError('Sort order must be zero or a positive integer.');
+  }
+
+  return {code, name, description, status, sortOrder};
+}
+
+export async function createBusinessUnit(payload, actorUserId = null) {
+  const data = normalizeBusinessUnitPayload(payload);
+  const created = await insertBusinessUnit(data);
+
+  await insertOrganizationAuditLog({
+    actorUserId,
+    action: 'ORGANIZATION_BUSINESS_UNIT_CREATED',
+    entityType: 'BUSINESS_UNIT',
+    entityId: created.id,
+    metadata: {
+      code: created.code,
+      name: created.name,
+      status: created.status,
+    },
+  });
+
+  return created;
+}
+
+export async function updateBusinessUnit({id, payload, actorUserId = null}) {
+  if (!Number.isInteger(Number(id)) || Number(id) <= 0) {
+    throw validationError('Invalid Business Unit ID.');
+  }
+
+  const current = await getBusinessUnitById(Number(id));
+  if (!current) return null;
+
+  const data = normalizeBusinessUnitPayload(payload);
+  const updated = await updateBusinessUnitRecord({
+    id: Number(id),
+    ...data,
+  });
+
+  await insertOrganizationAuditLog({
+    actorUserId,
+    action: 'ORGANIZATION_BUSINESS_UNIT_UPDATED',
+    entityType: 'BUSINESS_UNIT',
+    entityId: updated.id,
+    metadata: {
+      before: {
+        code: current.code,
+        name: current.name,
+        status: current.status,
+        sort_order: current.sort_order,
+      },
+      after: {
+        code: updated.code,
+        name: updated.name,
+        status: updated.status,
+        sort_order: updated.sort_order,
+      },
+    },
+  });
+
+  return updated;
+}
+
+export async function removeBusinessUnit({id, actorUserId = null}) {
+  if (!Number.isInteger(Number(id)) || Number(id) <= 0) {
+    throw validationError('Invalid Business Unit ID.');
+  }
+
+  const current = await getBusinessUnitById(Number(id));
+  if (!current) return null;
+
+  const usage = await getBusinessUnitUsage(Number(id));
+  const totalUsage =
+    Number(usage.employee_primary_count || 0) +
+    Number(usage.employee_business_unit_count || 0) +
+    Number(usage.assignment_count || 0);
+
+  if (totalUsage > 0) {
+    const error = new Error(
+      'Business Unit is already used by Employee or Assignment data. Set status to INACTIVE instead of deleting it.'
+    );
+    error.statusCode = 409;
+    error.details = usage;
+    throw error;
+  }
+
+  const deleted = await deleteBusinessUnitRecord(Number(id));
+  if (!deleted) return null;
+
+  await insertOrganizationAuditLog({
+    actorUserId,
+    action: 'ORGANIZATION_BUSINESS_UNIT_DELETED',
+    entityType: 'BUSINESS_UNIT',
+    entityId: id,
+    metadata: {
+      code: current.code,
+      name: current.name,
+    },
+  });
+
+  return {deleted: true, id: String(id)};
+}
+
 
 export async function getJobLevels({ locale = 'en' } = {}) {
   return listJobLevels({ locale });

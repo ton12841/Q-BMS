@@ -206,6 +206,84 @@ export async function listPositions({
   return result.rows;
 }
 
+export async function getBusinessUnitById(id) {
+  const result = await db.query(`
+    SELECT id, code, name, description, status, sort_order, created_at, updated_at
+    FROM business_units
+    WHERE id = $1
+  `, [id]);
+  return result.rows[0] || null;
+}
+
+export async function insertBusinessUnit({code, name, description, status, sortOrder}) {
+  const result = await db.query(`
+    INSERT INTO business_units (code, name, description, status, sort_order)
+    VALUES ($1, $2, $3, $4, $5)
+    RETURNING *
+  `, [code, name, description, status, sortOrder]);
+  return result.rows[0];
+}
+
+export async function updateBusinessUnitRecord({id, code, name, description, status, sortOrder}) {
+  const result = await db.query(`
+    UPDATE business_units
+    SET
+      code = $2,
+      name = $3,
+      description = $4,
+      status = $5,
+      sort_order = $6,
+      updated_at = NOW()
+    WHERE id = $1
+    RETURNING *
+  `, [id, code, name, description, status, sortOrder]);
+  return result.rows[0] || null;
+}
+
+export async function getBusinessUnitUsage(id) {
+  const result = await db.query(`
+    SELECT
+      (SELECT COUNT(*)::int FROM employees WHERE primary_business_unit_id = $1) AS employee_primary_count,
+      (SELECT COUNT(*)::int FROM employee_business_units WHERE business_unit_id = $1) AS employee_business_unit_count,
+      (SELECT COUNT(*)::int FROM employee_assignments WHERE business_unit_id = $1) AS assignment_count
+  `, [id]);
+  return result.rows[0];
+}
+
+export async function deleteBusinessUnitRecord(id) {
+  const result = await db.query(`
+    DELETE FROM business_units
+    WHERE id = $1
+    RETURNING id
+  `, [id]);
+  return result.rows[0] || null;
+}
+
+export async function insertOrganizationAuditLog({
+  actorUserId = null,
+  action,
+  entityType,
+  entityId,
+  metadata = {},
+}) {
+  await db.query(`
+    INSERT INTO audit_logs (
+      actor_user_id,
+      action,
+      entity_type,
+      entity_id,
+      metadata
+    )
+    VALUES ($1, $2, $3, $4, $5::jsonb)
+  `, [
+    actorUserId || null,
+    action,
+    entityType,
+    String(entityId),
+    JSON.stringify(metadata || {}),
+  ]);
+}
+
 export async function upsertBusinessUnit({
   code,
   name,

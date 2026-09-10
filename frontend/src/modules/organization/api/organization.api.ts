@@ -12,6 +12,14 @@ export type BusinessUnit = {
   updated_at: string;
 };
 
+export type BusinessUnitWritePayload = {
+  code: string;
+  name: string;
+  description: string;
+  status: "ACTIVE" | "INACTIVE";
+  sort_order: number;
+};
+
 export type JobGrade = {
   id: string;
   job_level_id: string;
@@ -163,14 +171,10 @@ async function requestJson<T>(
     cache: "no-store",
   });
 
-  if (!response.ok) {
-    throw new Error(`${label} API returned ${response.status}.`);
-  }
+  const payload = (await response.json().catch(() => null)) as ApiResponse<T> | null;
 
-  const payload = (await response.json()) as ApiResponse<T>;
-
-  if (!payload.success) {
-    throw new Error(payload.message || `Invalid ${label} API response.`);
+  if (!response.ok || !payload?.success) {
+    throw new Error(payload?.message || `${label} API returned ${response.status}.`);
   }
 
   return payload.data;
@@ -191,6 +195,43 @@ export async function fetchBusinessUnits(
   }
 
   return data;
+}
+
+export async function createBusinessUnit(
+  payload: BusinessUnitWritePayload
+): Promise<BusinessUnit> {
+  return requestJson<BusinessUnit>(
+    "/api/organization/business-units",
+    "Business Unit",
+    {
+      method: "POST",
+      body: JSON.stringify(payload),
+    }
+  );
+}
+
+export async function updateBusinessUnit(
+  id: string,
+  payload: BusinessUnitWritePayload
+): Promise<BusinessUnit> {
+  return requestJson<BusinessUnit>(
+    `/api/organization/business-units/${id}`,
+    "Business Unit",
+    {
+      method: "PUT",
+      body: JSON.stringify(payload),
+    }
+  );
+}
+
+export async function deleteBusinessUnit(
+  id: string
+): Promise<{deleted: boolean; id: string}> {
+  return requestJson<{deleted: boolean; id: string}>(
+    `/api/organization/business-units/${id}`,
+    "Business Unit",
+    {method: "DELETE"}
+  );
 }
 
 export async function fetchLevelGradeStructure(

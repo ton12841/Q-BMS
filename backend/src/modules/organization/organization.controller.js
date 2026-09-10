@@ -3,6 +3,9 @@ import { normalizeLocale } from '../../core/i18n/i18n.js';
 import {
   getOrganizationMaster,
   getBusinessUnits,
+  createBusinessUnit,
+  updateBusinessUnit,
+  removeBusinessUnit,
   getJobLevels,
   getJobGrades,
   getLevelGradeStructure,
@@ -47,6 +50,96 @@ export async function businessUnitsController(req, res, next) {
     next(error);
   }
 }
+
+function handleBusinessUnitWriteError(error, res, next) {
+  if (error?.statusCode) {
+    return res.status(error.statusCode).json({
+      success: false,
+      message: error.message,
+      details: error.details || undefined,
+    });
+  }
+
+  if (error?.code === '23505') {
+    return res.status(409).json({
+      success: false,
+      message: 'Business Unit code already exists.',
+    });
+  }
+
+  if (error?.code === '23503') {
+    return res.status(409).json({
+      success: false,
+      message: 'Business Unit is referenced by existing data and cannot be deleted.',
+    });
+  }
+
+  return next(error);
+}
+
+export async function createBusinessUnitController(req, res, next) {
+  try {
+    const data = await createBusinessUnit(
+      req.body,
+      req.auth?.user?.id || null
+    );
+
+    return res.status(201).json({
+      success: true,
+      data,
+    });
+  } catch (error) {
+    return handleBusinessUnitWriteError(error, res, next);
+  }
+}
+
+export async function updateBusinessUnitController(req, res, next) {
+  try {
+    const data = await updateBusinessUnit({
+      id: Number(req.params.id),
+      payload: req.body,
+      actorUserId: req.auth?.user?.id || null,
+    });
+
+    if (!data) {
+      return res.status(404).json({
+        success: false,
+        message: 'Business Unit not found.',
+      });
+    }
+
+    return res.json({
+      success: true,
+      data,
+    });
+  } catch (error) {
+    return handleBusinessUnitWriteError(error, res, next);
+  }
+}
+
+export async function deleteBusinessUnitController(req, res, next) {
+  try {
+    const data = await removeBusinessUnit({
+      id: Number(req.params.id),
+      actorUserId: req.auth?.user?.id || null,
+    });
+
+    if (!data) {
+      return res.status(404).json({
+        success: false,
+        message: 'Business Unit not found.',
+      });
+    }
+
+    return res.json({
+      success: true,
+      data,
+    });
+  } catch (error) {
+    return handleBusinessUnitWriteError(error, res, next);
+  }
+}
+
 
 export async function jobLevelsController(req, res, next) {
   try {
