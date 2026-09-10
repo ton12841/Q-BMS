@@ -19,6 +19,17 @@ import {
   type Employee,
   type EmployeeWritePayload,
 } from "@/modules/employee/api/employee.api";
+import {
+  fetchEmployeeAssignmentOverview,
+  transitionEmployeeAssignment,
+  type EmployeeAssignmentOverview,
+} from "@/modules/employee/organization-assignment/employeeAssignment.api";
+import {
+  endReportingLine,
+  fetchReportingLinesOverview,
+  saveReportingLine,
+  type ReportingLinesOverview,
+} from "@/modules/organization/reporting-lines/reportingLines.api";
 import styles from "./EmployeePage.module.css";
 import polish from "./EmployeeHeaderPolish.module.css";
 
@@ -38,6 +49,11 @@ type EmployeeForm = {
   positionId: string;
   jobGradeId: string;
   assignmentEffectiveFrom: string;
+  primaryManagerAssignmentId: string;
+  dottedManagerAssignmentIds: string[];
+  assignmentChangeType: "TRANSFER" | "PROMOTION" | "LATERAL_MOVE" | "CORRECTION";
+  assignmentChangeReason: string;
+  assignmentChangeNote: string;
 };
 
 const EMPTY_FORM: EmployeeForm = {
@@ -56,6 +72,11 @@ const EMPTY_FORM: EmployeeForm = {
   positionId: "",
   jobGradeId: "",
   assignmentEffectiveFrom: "",
+  primaryManagerAssignmentId: "",
+  dottedManagerAssignmentIds: [],
+  assignmentChangeType: "CORRECTION",
+  assignmentChangeReason: "",
+  assignmentChangeNote: "",
 };
 
 function newForm(): EmployeeForm {
@@ -93,6 +114,8 @@ export default function EmployeePageClient() {
   const [formLoading, setFormLoading] = useState(false);
   const [formError, setFormError] = useState("");
   const [saving, setSaving] = useState(false);
+  const [assignmentOverview, setAssignmentOverview] = useState<EmployeeAssignmentOverview | null>(null);
+  const [reportingOverview, setReportingOverview] = useState<ReportingLinesOverview | null>(null);
 
   const activeBusinessUnits = useMemo(
     () => businessUnits.filter((item) => item.status === "ACTIVE"),
@@ -113,8 +136,45 @@ export default function EmployeePageClient() {
     (grade) => String(grade.id) === form.jobGradeId
   );
 
-  const organizationAssignmentLocked =
-    Boolean(editingId && editingEmployee?.employee_status === "ACTIVE");
+  const managerCandidates = assignmentOverview?.managerCandidates || [];
+  const currentAssignment = assignmentOverview?.current || null;
+
+  const unifiedCopy =
+    locale === "th"
+      ? {
+          historyTitle: "การเปลี่ยน Organization จะเก็บประวัติอัตโนมัติ",
+          historyBody: "สำหรับพนักงาน ACTIVE ระบบจะสร้าง Assignment ใหม่ตาม Effective Date และปิด Assignment เดิม ไม่เขียนทับประวัติ",
+          primaryManager: "Reports To (Primary Manager)",
+          dottedManager: "Dotted Reports To",
+          dottedHint: "เลือกได้มากกว่า 1 คน (กด Cmd/Ctrl ค้างเพื่อเลือกหลายคน)",
+          changeType: "ประเภทการเปลี่ยน",
+          changeReason: "เหตุผลการเปลี่ยน",
+          changeNote: "หมายเหตุการเปลี่ยน",
+          selectManager: "ไม่ระบุ Primary Manager",
+        }
+      : locale === "lo"
+        ? {
+            historyTitle: "ການປ່ຽນ Organization ຈະເກັບປະຫວັດອັດຕະໂນມັດ",
+            historyBody: "ສຳລັບພະນັກງານ ACTIVE ລະບົບຈະສ້າງ Assignment ໃໝ່ຕາມ Effective Date ແລະປິດ Assignment ເກົ່າ",
+            primaryManager: "Reports To (Primary Manager)",
+            dottedManager: "Dotted Reports To",
+            dottedHint: "ເລືອກໄດ້ຫຼາຍຄົນ (ກົດ Cmd/Ctrl ຄ້າງ)",
+            changeType: "ປະເພດການປ່ຽນ",
+            changeReason: "ເຫດຜົນ",
+            changeNote: "ໝາຍເຫດ",
+            selectManager: "ບໍ່ລະບຸ Primary Manager",
+          }
+        : {
+            historyTitle: "Organization changes preserve history automatically",
+            historyBody: "For ACTIVE Employees, Q BMS creates a new effective-dated Assignment and closes the previous Assignment instead of overwriting history.",
+            primaryManager: "Reports To (Primary Manager)",
+            dottedManager: "Dotted Reports To",
+            dottedHint: "Multiple managers are allowed (hold Cmd/Ctrl to select multiple).",
+            changeType: "Change Type",
+            changeReason: "Change Reason",
+            changeNote: "Change Note",
+            selectManager: "No Primary Manager",
+          };
 
   const loadData = useCallback(
     async (refresh = false) => {
@@ -202,6 +262,8 @@ export default function EmployeePageClient() {
   function openCreate() {
     setEditingId(null);
     setEditingEmployee(null);
+    setAssignmentOverview(null);
+    setReportingOverview(null);
     setForm(newForm());
     setFormError("");
     setFormLoading(false);
@@ -216,8 +278,24 @@ export default function EmployeePageClient() {
     setModalOpen(true);
 
     try {
-      const detail = await fetchEmployeeDetail(employee.id, locale);
+      const [detail, assignmentData, reportingData] = await Promise.all([
+        fetchEmployeeDetail(employee.id, locale),
+        fetchEmployeeAssignmentOverview(employee.id, locale),
+        fetchReportingLinesOverview(locale),
+      ]);
       setEditingEmployee(detail);
+      setAssignmentOverview(assignmentData);
+      setReportingOverview(reportingData);
+
+      const currentDottedManagerIds = reportingData.lines
+        .filter(
+          (line) =>
+            line.isCurrent &&
+            line.relationshipType === "DOTTED" &&
+            String(line.employee.employeeId) === String(employee.id)
+        )
+        .map((line) => line.reportsToAssignmentId);
+
       setForm({
         employeeCode: detail.employee_code || "",
         firstName: detail.first_name || "",
@@ -238,6 +316,11 @@ export default function EmployeePageClient() {
         jobGradeId: detail.job_grade_id ? String(detail.job_grade_id) : "",
         assignmentEffectiveFrom:
           detail.effective_from?.slice(0, 10) || detail.start_date?.slice(0, 10) || "",
+        primaryManagerAssignmentId: assignmentData.current?.manager?.assignmentId || "",
+        dottedManagerAssignmentIds: currentDottedManagerIds,
+        assignmentChangeType: "CORRECTION",
+        assignmentChangeReason: "",
+        assignmentChangeNote: "",
       });
     } catch (loadError) {
       setFormError(loadError instanceof Error ? loadError.message : t("employee.formLoadError"));
@@ -251,11 +334,78 @@ export default function EmployeePageClient() {
     setModalOpen(false);
     setEditingId(null);
     setEditingEmployee(null);
+    setAssignmentOverview(null);
+    setReportingOverview(null);
     setFormError("");
   }
 
   function changePosition(positionId: string) {
     setForm((current) => ({...current, positionId, jobGradeId: ""}));
+  }
+
+  async function syncReportingRelationships({
+    employeeId,
+    employeeAssignmentId,
+    effectiveFrom,
+    overview,
+    skipPrimary = false,
+  }: {
+    employeeId: string;
+    employeeAssignmentId: string;
+    effectiveFrom: string;
+    overview: ReportingLinesOverview;
+    skipPrimary?: boolean;
+  }) {
+    const liveLines = overview.lines.filter(
+      (line) =>
+        line.isCurrent &&
+        String(line.employee.employeeId) === String(employeeId)
+    );
+    const livePrimary =
+      liveLines.find((line) => line.relationshipType === "PRIMARY") || null;
+    const liveDotted = liveLines.filter(
+      (line) => line.relationshipType === "DOTTED"
+    );
+
+    if (!skipPrimary) {
+      const currentPrimaryId = livePrimary?.reportsToAssignmentId || "";
+      const nextPrimaryId = form.primaryManagerAssignmentId || "";
+
+      if (currentPrimaryId !== nextPrimaryId) {
+        if (nextPrimaryId) {
+          await saveReportingLine(locale, {
+            employee_assignment_id: employeeAssignmentId,
+            reports_to_assignment_id: nextPrimaryId,
+            relationship_type: "PRIMARY",
+            effective_from: effectiveFrom,
+          });
+        } else if (livePrimary) {
+          await endReportingLine(livePrimary.id, locale, effectiveFrom);
+        }
+      }
+    }
+
+    const wantedDotted = new Set(form.dottedManagerAssignmentIds);
+    const currentDotted = new Set(
+      liveDotted.map((line) => line.reportsToAssignmentId)
+    );
+
+    for (const line of liveDotted) {
+      if (!wantedDotted.has(line.reportsToAssignmentId)) {
+        await endReportingLine(line.id, locale, effectiveFrom);
+      }
+    }
+
+    for (const managerAssignmentId of wantedDotted) {
+      if (!currentDotted.has(managerAssignmentId)) {
+        await saveReportingLine(locale, {
+          employee_assignment_id: employeeAssignmentId,
+          reports_to_assignment_id: managerAssignmentId,
+          relationship_type: "DOTTED",
+          effective_from: effectiveFrom,
+        });
+      }
+    }
   }
 
   async function submitForm(event: React.FormEvent<HTMLFormElement>) {
@@ -311,13 +461,71 @@ export default function EmployeePageClient() {
 
     setSaving(true);
     try {
-      if (editingId) await updateEmployee(editingId, payload);
-      else await createEmployee(payload);
+      if (editingId && editingEmployee) {
+        const effectiveFrom = form.assignmentEffectiveFrom || form.startDate;
+        const isActive = editingEmployee.employee_status === "ACTIVE";
+        const organizationChanged = Boolean(
+          currentAssignment &&
+            (String(currentAssignment.businessUnit.id) !== String(form.businessUnitId) ||
+              String(currentAssignment.position.id) !== String(form.positionId) ||
+              String(currentAssignment.jobGrade.id) !== String(form.jobGradeId))
+        );
+
+        if (isActive && organizationChanged) {
+          if (!effectiveFrom) {
+            throw new Error("Effective From is required for an Organization change.");
+          }
+          if (!form.assignmentChangeReason.trim()) {
+            throw new Error("Change Reason is required for an ACTIVE Employee Organization change.");
+          }
+
+          const transitioned = await transitionEmployeeAssignment(editingId, locale, {
+            business_unit_id: form.businessUnitId,
+            position_id: form.positionId,
+            job_grade_id: form.jobGradeId,
+            effective_from: effectiveFrom,
+            change_type: form.assignmentChangeType,
+            change_reason: form.assignmentChangeReason.trim(),
+            change_note: form.assignmentChangeNote.trim(),
+            primary_manager_assignment_id: form.primaryManagerAssignmentId || null,
+          });
+
+          await updateEmployee(editingId, payload);
+
+          if (transitioned.current?.assignmentId) {
+            const freshReporting = await fetchReportingLinesOverview(locale);
+            await syncReportingRelationships({
+              employeeId: editingId,
+              employeeAssignmentId: transitioned.current.assignmentId,
+              effectiveFrom,
+              overview: freshReporting,
+              skipPrimary: true,
+            });
+          }
+        } else {
+          await updateEmployee(editingId, payload);
+
+          const assignmentId =
+            currentAssignment?.assignmentId || editingEmployee.assignment_id;
+          if (assignmentId && reportingOverview && effectiveFrom) {
+            await syncReportingRelationships({
+              employeeId: editingId,
+              employeeAssignmentId: String(assignmentId),
+              effectiveFrom,
+              overview: reportingOverview,
+            });
+          }
+        }
+      } else {
+        await createEmployee(payload);
+      }
 
       await loadData();
       setModalOpen(false);
       setEditingId(null);
       setEditingEmployee(null);
+      setAssignmentOverview(null);
+      setReportingOverview(null);
       setForm(newForm());
     } catch (saveError) {
       setFormError(saveError instanceof Error ? saveError.message : t("employee.saveError"));
@@ -716,7 +924,6 @@ export default function EmployeePageClient() {
                         <select
                           value={form.businessUnitId}
                           onChange={(event) => setForm((current) => ({...current, businessUnitId: event.target.value}))}
-                          disabled={organizationAssignmentLocked}
                         >
                           <option value="">{t("employee.selectBusinessUnit")}</option>
                           {activeBusinessUnits.map((unit) => (
@@ -730,7 +937,6 @@ export default function EmployeePageClient() {
                         <select
                           value={form.positionId}
                           onChange={(event) => changePosition(event.target.value)}
-                          disabled={organizationAssignmentLocked}
                         >
                           <option value="">{t("employee.selectPosition")}</option>
                           {activePositions.map((position) => (
@@ -744,7 +950,7 @@ export default function EmployeePageClient() {
                         <select
                           value={form.jobGradeId}
                           onChange={(event) => setForm((current) => ({...current, jobGradeId: event.target.value}))}
-                          disabled={!selectedPosition || organizationAssignmentLocked}
+                          disabled={!selectedPosition}
                         >
                           <option value="">
                             {selectedPosition ? t("employee.selectGrade") : t("employee.selectPositionFirst")}
@@ -773,14 +979,123 @@ export default function EmployeePageClient() {
                           type="date"
                           value={form.assignmentEffectiveFrom}
                           onChange={(event) => setForm((current) => ({...current, assignmentEffectiveFrom: event.target.value}))}
-                          disabled={organizationAssignmentLocked}
                         />
                       </label>
+
+                      {editingId ? (
+                        <>
+                          <label className={styles.field}>
+                            <span>{unifiedCopy.primaryManager}</span>
+                            <select
+                              value={form.primaryManagerAssignmentId}
+                              onChange={(event) =>
+                                setForm((current) => ({
+                                  ...current,
+                                  primaryManagerAssignmentId: event.target.value,
+                                  dottedManagerAssignmentIds:
+                                    current.dottedManagerAssignmentIds.filter(
+                                      (id) => id !== event.target.value
+                                    ),
+                                }))
+                              }
+                            >
+                              <option value="">{unifiedCopy.selectManager}</option>
+                              {managerCandidates.map((manager) => (
+                                <option key={manager.assignmentId} value={manager.assignmentId}>
+                                  {manager.displayName} — {manager.positionName} · {manager.businessUnitCode}
+                                </option>
+                              ))}
+                            </select>
+                          </label>
+
+                          <label className={styles.field}>
+                            <span>{unifiedCopy.dottedManager}</span>
+                            <select
+                              multiple
+                              className={styles.multiSelect}
+                              value={form.dottedManagerAssignmentIds}
+                              onChange={(event) =>
+                                setForm((current) => ({
+                                  ...current,
+                                  dottedManagerAssignmentIds: Array.from(
+                                    event.target.selectedOptions
+                                  ).map((option) => option.value),
+                                }))
+                              }
+                            >
+                              {managerCandidates
+                                .filter(
+                                  (manager) =>
+                                    manager.assignmentId !== form.primaryManagerAssignmentId
+                                )
+                                .map((manager) => (
+                                  <option key={manager.assignmentId} value={manager.assignmentId}>
+                                    {manager.displayName} — {manager.positionName} · {manager.businessUnitCode}
+                                  </option>
+                                ))}
+                            </select>
+                            <small>{unifiedCopy.dottedHint}</small>
+                          </label>
+
+                          {editingEmployee?.employee_status === "ACTIVE" ? (
+                            <>
+                              <label className={styles.field}>
+                                <span>{unifiedCopy.changeType}</span>
+                                <select
+                                  value={form.assignmentChangeType}
+                                  onChange={(event) =>
+                                    setForm((current) => ({
+                                      ...current,
+                                      assignmentChangeType:
+                                        event.target.value as EmployeeForm["assignmentChangeType"],
+                                    }))
+                                  }
+                                >
+                                  <option value="CORRECTION">CORRECTION</option>
+                                  <option value="TRANSFER">TRANSFER</option>
+                                  <option value="PROMOTION">PROMOTION</option>
+                                  <option value="LATERAL_MOVE">LATERAL MOVE</option>
+                                </select>
+                              </label>
+
+                              <label className={styles.field}>
+                                <span>{unifiedCopy.changeReason}</span>
+                                <input
+                                  value={form.assignmentChangeReason}
+                                  onChange={(event) =>
+                                    setForm((current) => ({
+                                      ...current,
+                                      assignmentChangeReason: event.target.value,
+                                    }))
+                                  }
+                                />
+                              </label>
+
+                              <label className={`${styles.field} ${styles.fullWidthField}`}>
+                                <span>{unifiedCopy.changeNote}</span>
+                                <textarea
+                                  rows={2}
+                                  value={form.assignmentChangeNote}
+                                  onChange={(event) =>
+                                    setForm((current) => ({
+                                      ...current,
+                                      assignmentChangeNote: event.target.value,
+                                    }))
+                                  }
+                                />
+                              </label>
+                            </>
+                          ) : null}
+                        </>
+                      ) : null}
                     </div>
-                    {organizationAssignmentLocked && editingId ? (
-                      <div className={styles.assignmentLockNote}>
-                        <QBMSIcon name="lock" size={15} />
-                        <span>{t("employee.activeAssignmentLocked")}</span>
+                    {editingId && editingEmployee?.employee_status === "ACTIVE" ? (
+                      <div className={styles.assignmentHistoryNote}>
+                        <QBMSIcon name="clock" size={15} />
+                        <div>
+                          <strong>{unifiedCopy.historyTitle}</strong>
+                          <span>{unifiedCopy.historyBody}</span>
+                        </div>
                         <Link href={`/employee/${editingId}/organization-assignment`}>
                           {t("employee.manageOrganizationAssignment")}
                         </Link>

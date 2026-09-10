@@ -466,3 +466,62 @@
   font-weight: 900;
   text-decoration: none;
 }
+
+
+/* v2.3.6.0 — HR Employee Unified Edit */
+.assignmentHistoryNote {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: start;
+  gap: 10px;
+  margin-top: 12px;
+  border: 1px solid #cfe0f4;
+  border-radius: 10px;
+  background: #f6faff;
+  padding: 11px 12px;
+  color: #5d7694;
+}
+
+.assignmentHistoryNote > div {
+  display: grid;
+  gap: 3px;
+}
+
+.assignmentHistoryNote strong {
+  color: #324f72;
+  font-size: 12px;
+}
+
+.assignmentHistoryNote span,
+.assignmentHistoryNote a {
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.assignmentHistoryNote a {
+  color: #0b66d4;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.multiSelect {
+  min-height: 108px;
+}
+
+.fullWidthField {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 760px) {
+  .assignmentHistoryNote {
+    grid-template-columns: auto 1fr;
+  }
+
+  .assignmentHistoryNote a {
+    grid-column: 2;
+  }
+
+  .fullWidthField {
+    grid-column: 1;
+  }
+}

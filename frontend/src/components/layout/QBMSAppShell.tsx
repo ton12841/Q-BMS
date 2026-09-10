@@ -511,7 +511,7 @@ export default function QBMSAppShell({
             </span>
             <span className="qbms-footer-copy">
               <strong>Q BMS</strong>
-              <small>v2.3.5.2</small>
+              <small>v2.3.6.1</small>
             </span>
           </div>
 

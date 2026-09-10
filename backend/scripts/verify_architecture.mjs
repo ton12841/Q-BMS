@@ -16,7 +16,7 @@ function assert(condition, message) {
 const rootPackage = JSON.parse(await read('package.json'));
 const backendPackage = JSON.parse(await read('backend/package.json'));
 const frontendPackage = JSON.parse(await read('frontend/package.json'));
-const expectedVersion = '2.3.5.2';
+const expectedVersion = '2.3.6.1';
 
 assert(rootPackage.version === expectedVersion, 'Root package version is not synchronized.');
 assert(backendPackage.version === expectedVersion, 'Backend package version is not synchronized.');
@@ -51,7 +51,7 @@ assert(workspaceRepo.includes('employee_reporting_lines'), 'Employee Workspace d
 assert(workspaceRepo.includes('LEGACY_MANAGER_FALLBACK'), 'Temporary legacy Manager fallback marker is missing.');
 
 const appShell = await read('frontend/src/components/layout/QBMSAppShell.tsx');
-assert(appShell.includes('v2.3.5.2'), 'Frontend App Shell version is not v2.3.5.2.');
+assert(appShell.includes('v2.3.6.1'), 'Frontend App Shell version is not v2.3.6.0.');
 assert(appShell.includes('handleModulesToolsClickCapture'), 'Super Admin entry regression detected.');
 assert(appShell.includes('!pathname?.startsWith("/super-admin")'), 'Super Admin active-state regression detected.');
 
@@ -151,8 +151,24 @@ assert(
   'Employee Master Organization Assignment link is missing.'
 );
 assert(
-  employeePage.includes('organizationAssignmentLocked'),
-  'Employee Master active assignment UI lock is missing.'
+  employeePage.includes('transitionEmployeeAssignment'),
+  'Employee Master assignment history transition is missing.'
+);
+assert(
+  employeePage.includes('fetchReportingLinesOverview'),
+  'Employee Master Reporting Lines integration is missing.'
+);
+assert(
+  employeePage.includes('primaryManagerAssignmentId'),
+  'Employee Master Primary Reports To unified edit is missing.'
+);
+assert(
+  employeePage.includes('dottedManagerAssignmentIds'),
+  'Employee Master Dotted Reports To unified edit is missing.'
+);
+assert(
+  !employeePage.includes('organizationAssignmentLocked'),
+  'Obsolete Employee Master active assignment UI lock still exists.'
 );
 
 const assignmentPage = await read(
