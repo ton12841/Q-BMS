@@ -567,11 +567,11 @@ const configs: QaModuleConfig[] = [
     titleKey: "modules.crm.title",
     canonicalName: "CRM",
     entityType: "TOOL",
-    status: "HOLD",
-    realHref: "/module/crm",
+    status: "FOUNDATION",
+    realHref: "/crm",
     icon: "grid",
     previewKind: "kanban",
-    summary: "Reserved CRM preview showing the future shared-data sales execution model.",
+    summary: "Multi-BU CRM foundation for lead, activity, deal and pipeline execution.",
     metrics: [
       { label: "Leads", value: "86" },
       { label: "Opportunities", value: "31" },
@@ -590,7 +590,7 @@ const configs: QaModuleConfig[] = [
       { opportunity: "QA New Branches", customer: "QA Riverside Hotel", owner: "QA Sales B.", value: "96M LAK", status: "QUALIFIED" },
       { opportunity: "QA Hardware Upgrade", customer: "QA Vientiane Retail", owner: "QA Sales A.", value: "72M LAK", status: "NEGOTIATION" },
     ],
-    notes: ["CRM remains HOLD.", "This QA preview does not start CRM migration or create CRM data."],
+    notes: ["CRM foundation development is active on feat-crm.", "QA preview data never creates production CRM records."],
   },
   {
     key: "it-admin",

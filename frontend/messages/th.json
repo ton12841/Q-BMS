@@ -104,7 +104,7 @@
     },
     "crm": {
       "title": "CRM",
-      "description": "เตรียมพื้นที่ไว้สำหรับการย้ายระบบ CRM เข้ามาในอนาคต"
+      "description": "พื้นที่ทำงานฝ่ายขายแบบ Multi-BU สำหรับ Lead, Activity, Deal และ Pipeline"
     },
     "tag": {
       "module": "โมดูล",

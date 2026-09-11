@@ -60,7 +60,7 @@ const groups: Array<{
     cards: [
       { titleKey: "modules.financial.title", descriptionKey: "modules.financial.description", icon: "wallet", tagKey: "modules.tag.tool", href: "/module/financial" },
       { titleKey: "modules.managementDashboard.title", descriptionKey: "modules.managementDashboard.description", icon: "chart", tagKey: "modules.tag.tool", href: "/module/management-dashboard" },
-      { titleKey: "modules.crm.title", descriptionKey: "modules.crm.description", icon: "grid", tagKey: "modules.tag.tool", href: "/module/crm", status: "hold" },
+      { titleKey: "modules.crm.title", descriptionKey: "modules.crm.description", icon: "grid", tagKey: "modules.tag.tool", href: "/crm" },
     ],
   },
   {

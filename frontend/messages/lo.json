@@ -104,7 +104,7 @@
     },
     "crm": {
       "title": "CRM",
-      "description": "ກຽມພື້ນທີ່ໄວ້ສຳລັບການຍ້າຍລະບົບ CRM ເຂົ້າມາໃນອະນາຄົດ"
+      "description": "ພື້ນທີ່ວຽກຂາຍແບບ Multi-BU ສຳລັບ Lead, Activity, Deal ແລະ Pipeline"
     },
     "tag": {
       "module": "ໂມດູນ",
