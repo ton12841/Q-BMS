@@ -1,7 +1,14 @@
 export type CRMTab = "my-day" | "my-leads" | "activities" | "pipeline";
 
-export type BusinessUnitCode = "QPOS" | "IQURI" | "IQURI_X" | "LBB";
-export type BusinessUnitFilter = "ALL" | BusinessUnitCode;
+export type BusinessUnitCode = string;
+export type BusinessUnitFilter = string;
+
+export type CRMBusinessUnit = {
+  id: string;
+  code: string;
+  name: string;
+  status: string;
+};
 
 export type LeadSource =
   | "EVENT"
@@ -16,6 +23,7 @@ export type LeadSource =
   | "OWN_LEAD";
 
 export type LeadStatus =
+  | "UNASSIGNED"
   | "NEW"
   | "ASSIGNED"
   | "CONTACTED"
@@ -63,14 +71,20 @@ export type CRMLead = {
   whatsapp?: string;
   province: string;
   source: LeadSource;
+  sourceDetail?: string;
   businessUnit: BusinessUnitCode;
+  businessUnitName?: string;
   project?: string;
   campaign?: string;
   owner: string;
+  ownerUserId?: string;
   status: LeadStatus;
   nextActivity?: ActivityType;
   nextActivityAt?: string;
   note?: string;
+  lostReason?: string;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 export type CRMActivity = {
@@ -105,4 +119,17 @@ export type CRMDeal = {
   paymentSlipUploaded?: boolean;
   financePaymentConfirmed?: boolean;
   invoiceNumber?: string;
+};
+
+export type CRMLeadCreatePayload = {
+  businessUnitCode: string;
+  storeName: string;
+  primaryContact: string;
+  phone: string;
+  province: string;
+  source: LeadSource;
+  sourceDetail?: string;
+  email?: string;
+  whatsapp?: string;
+  allowDuplicate?: boolean;
 };

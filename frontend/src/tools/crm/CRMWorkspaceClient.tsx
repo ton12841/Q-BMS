@@ -1,13 +1,19 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import QBMSAppShell, { QBMSIcon } from "@/components/layout/QBMSAppShell";
 import { useI18n } from "@/i18n/useQBMSI18n";
+import {
+  createCRMLead,
+  CRMApiError,
+  fetchCRMBusinessUnits,
+  fetchCRMLeads,
+} from "./api/crm.api";
 import { crmCopy } from "./crm.i18n";
-import { CRM_QA_ACTIVITIES, CRM_QA_DEALS, CRM_QA_LEADS } from "./crm.qa-data";
+import { CRM_QA_ACTIVITIES, CRM_QA_DEALS } from "./crm.qa-data";
 import type {
   ActivityType,
-  BusinessUnitFilter,
+  CRMBusinessUnit,
   CRMLead,
   CRMTab,
   DealStage,
@@ -15,7 +21,6 @@ import type {
 } from "./crm.types";
 import styles from "./CRMWorkspace.module.css";
 
-const BU_OPTIONS: BusinessUnitFilter[] = ["QPOS", "IQURI", "IQURI_X", "LBB", "ALL"];
 const PIPELINE_STAGES: DealStage[] = [
   "NEW_DEAL",
   "DEMO",
@@ -24,6 +29,7 @@ const PIPELINE_STAGES: DealStage[] = [
   "CONTRACT",
   "PAYMENT",
 ];
+
 const LEAD_SOURCES: LeadSource[] = [
   "EVENT",
   "FACEBOOK",
@@ -53,12 +59,49 @@ export default function CRMWorkspaceClient() {
   const { locale } = useI18n();
   const c = crmCopy[locale];
   const [activeTab, setActiveTab] = useState<CRMTab>("my-day");
-  const [businessUnit, setBusinessUnit] = useState<BusinessUnitFilter>("QPOS");
+  const [businessUnit, setBusinessUnit] = useState("QPOS");
+  const [businessUnits, setBusinessUnits] = useState<CRMBusinessUnit[]>([]);
   const [query, setQuery] = useState("");
-  const [leads, setLeads] = useState<CRMLead[]>(CRM_QA_LEADS);
+  const [leads, setLeads] = useState<CRMLead[]>([]);
+  const [leadsLoading, setLeadsLoading] = useState(true);
+  const [leadError, setLeadError] = useState("");
   const [selectedLead, setSelectedLead] = useState<CRMLead | null>(null);
   const [showNewLead, setShowNewLead] = useState(false);
+  const [newLeadSource, setNewLeadSource] = useState<LeadSource>("OWN_LEAD");
+  const [savingLead, setSavingLead] = useState(false);
   const [toast, setToast] = useState("");
+
+  useEffect(() => {
+    const controller = new AbortController();
+    fetchCRMBusinessUnits(controller.signal)
+      .then((items) => {
+        setBusinessUnits(items);
+        if (!items.some((item) => item.code === businessUnit) && items.length) {
+          setBusinessUnit(items[0].code);
+        }
+      })
+      .catch(() => {
+        if (!controller.signal.aborted) setLeadError(c.loadError as string);
+      });
+    return () => controller.abort();
+  }, [locale]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    setLeadsLoading(true);
+    setLeadError("");
+
+    fetchCRMLeads(businessUnit || "ALL", controller.signal)
+      .then(setLeads)
+      .catch(() => {
+        if (!controller.signal.aborted) setLeadError(c.loadError as string);
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setLeadsLoading(false);
+      });
+
+    return () => controller.abort();
+  }, [businessUnit, locale]);
 
   const matchBU = (value: string) => businessUnit === "ALL" || value === businessUnit;
   const normalizedQuery = query.trim().toLowerCase();
@@ -66,14 +109,21 @@ export default function CRMWorkspaceClient() {
   const visibleLeads = useMemo(
     () =>
       leads.filter((lead) => {
-        if (!matchBU(lead.businessUnit)) return false;
         if (!normalizedQuery) return true;
-        return [lead.storeName, lead.primaryContact, lead.owner, lead.phone, lead.province]
+        return [
+          lead.id,
+          lead.storeName,
+          lead.primaryContact,
+          lead.owner,
+          lead.phone,
+          lead.province,
+          lead.email || "",
+        ]
           .join(" ")
           .toLowerCase()
           .includes(normalizedQuery);
       }),
-    [businessUnit, leads, normalizedQuery]
+    [leads, normalizedQuery]
   );
 
   const visibleActivities = useMemo(
@@ -93,37 +143,80 @@ export default function CRMWorkspaceClient() {
   );
   const newLeadCount = visibleLeads.filter((lead) => lead.status === "NEW").length;
 
-  function createLead(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const form = new FormData(event.currentTarget);
-    const storeName = String(form.get("storeName") || "").trim();
-    const primaryContact = String(form.get("primaryContact") || "").trim();
-    const phone = String(form.get("phone") || "").trim();
-    const province = String(form.get("province") || "").trim();
-    const source = String(form.get("source") || "OWN_LEAD") as LeadSource;
-    if (!storeName || !primaryContact || !phone || !province) return;
-
-    const nextLead: CRMLead = {
-      id: `LEAD-QA-${String(leads.length + 1).padStart(3, "0")}`,
-      storeName,
-      primaryContact,
-      phone,
-      province,
-      source,
-      email: String(form.get("email") || "").trim() || undefined,
-      whatsapp: String(form.get("whatsapp") || "").trim() || undefined,
-      businessUnit: businessUnit === "ALL" ? "QPOS" : businessUnit,
-      owner: "QA Current Sales",
-      status: "NEW",
-    };
-
-    setLeads((current) => [nextLead, ...current]);
-    setShowNewLead(false);
-    setActiveTab("my-leads");
-    setToast(c.createdLocal as string);
-    event.currentTarget.reset();
+  function showToast(message: string) {
+    setToast(message);
     window.setTimeout(() => setToast(""), 3500);
   }
+
+  async function reloadLeads(targetBU = businessUnit) {
+    setLeadsLoading(true);
+    try {
+      setLeads(await fetchCRMLeads(targetBU || "ALL"));
+      setLeadError("");
+    } catch {
+      setLeadError(c.loadError as string);
+    } finally {
+      setLeadsLoading(false);
+    }
+  }
+
+  async function createLead(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (savingLead) return;
+
+    const formElement = event.currentTarget;
+    const form = new FormData(formElement);
+    const payload = {
+      businessUnitCode: String(form.get("businessUnit") || "").trim(),
+      storeName: String(form.get("storeName") || "").trim(),
+      primaryContact: String(form.get("primaryContact") || "").trim(),
+      phone: String(form.get("phone") || "").trim(),
+      province: String(form.get("province") || "").trim(),
+      source: String(form.get("source") || "OWN_LEAD") as LeadSource,
+      sourceDetail: String(form.get("sourceDetail") || "").trim() || undefined,
+      email: String(form.get("email") || "").trim() || undefined,
+      whatsapp: String(form.get("whatsapp") || "").trim() || undefined,
+    };
+
+    if (!payload.businessUnitCode || !payload.storeName || !payload.primaryContact || !payload.phone || !payload.province) {
+      return;
+    }
+
+    setSavingLead(true);
+    try {
+      let created: CRMLead;
+      try {
+        created = await createCRMLead(payload);
+      } catch (error) {
+        if (
+          error instanceof CRMApiError &&
+          error.code === "CRM_LEAD_POSSIBLE_DUPLICATE"
+        ) {
+          const proceed = window.confirm(c.duplicatePrompt as string);
+          if (!proceed) return;
+          created = await createCRMLead({ ...payload, allowDuplicate: true });
+        } else {
+          throw error;
+        }
+      }
+
+      setShowNewLead(false);
+      setActiveTab("my-leads");
+      setBusinessUnit(created.businessUnit);
+      setNewLeadSource("OWN_LEAD");
+      formElement.reset();
+      await reloadLeads(created.businessUnit);
+      showToast(c.createdReal as string);
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : (c.loadError as string));
+    } finally {
+      setSavingLead(false);
+    }
+  }
+
+  const selectableBusinessUnits = businessUnits.length
+    ? businessUnits
+    : [{ id: "fallback-qpos", code: "QPOS", name: "QPOS", status: "ACTIVE" }];
 
   return (
     <QBMSAppShell
@@ -147,10 +240,11 @@ export default function CRMWorkspaceClient() {
           <div className={styles.heroActions}>
             <label className={styles.buPicker}>
               <span>{c.businessUnit as string}</span>
-              <select value={businessUnit} onChange={(event) => setBusinessUnit(event.target.value as BusinessUnitFilter)}>
-                {BU_OPTIONS.map((item) => (
-                  <option key={item} value={item}>
-                    {item === "ALL" ? (c.allBU as string) : item}
+              <select value={businessUnit} onChange={(event) => setBusinessUnit(event.target.value)}>
+                <option value="ALL">{c.allBU as string}</option>
+                {selectableBusinessUnits.map((item) => (
+                  <option key={item.id} value={item.code}>
+                    {item.code}
                   </option>
                 ))}
               </select>
@@ -259,6 +353,8 @@ export default function CRMWorkspaceClient() {
               <span className={styles.resultCount}>{visibleLeads.length} Leads</span>
             </div>
 
+            {leadError && <div className={styles.panel} style={{ padding: 16 }}>{leadError}</div>}
+
             <div className={styles.tableWrap}>
               <table>
                 <thead>
@@ -274,21 +370,27 @@ export default function CRMWorkspaceClient() {
                   </tr>
                 </thead>
                 <tbody>
-                  {visibleLeads.map((lead) => (
-                    <tr key={lead.id}>
-                      <td>
-                        <strong>{lead.storeName}</strong>
-                        <small>{lead.id} · {lead.businessUnit}</small>
-                      </td>
-                      <td>{lead.primaryContact}<small>{lead.phone}</small></td>
-                      <td>{lead.province}</td>
-                      <td>{prettyCode(lead.source)}</td>
-                      <td><span className={styles.leadStatus}>{prettyCode(lead.status)}</span></td>
-                      <td>{lead.owner}</td>
-                      <td>{lead.nextActivity ? <>{prettyCode(lead.nextActivity)}<small>{lead.nextActivityAt}</small></> : <span className={styles.warningText}>{c.noNextActivity as string}</span>}</td>
-                      <td><button type="button" className={styles.linkButton} onClick={() => setSelectedLead(lead)}>{c.open as string}</button></td>
-                    </tr>
-                  ))}
+                  {leadsLoading ? (
+                    <tr><td colSpan={8}>{c.loadingLeads as string}</td></tr>
+                  ) : visibleLeads.length ? (
+                    visibleLeads.map((lead) => (
+                      <tr key={lead.id}>
+                        <td>
+                          <strong>{lead.storeName}</strong>
+                          <small>{lead.id} · {lead.businessUnit}</small>
+                        </td>
+                        <td>{lead.primaryContact}<small>{lead.phone}</small></td>
+                        <td>{lead.province}</td>
+                        <td>{prettyCode(lead.source)}{lead.sourceDetail ? <small>{lead.sourceDetail}</small> : null}</td>
+                        <td><span className={styles.leadStatus}>{prettyCode(lead.status)}</span></td>
+                        <td>{lead.owner}</td>
+                        <td>{lead.nextActivity ? <>{prettyCode(lead.nextActivity)}<small>{lead.nextActivityAt}</small></> : <span className={styles.warningText}>{c.noNextActivity as string}</span>}</td>
+                        <td><button type="button" className={styles.linkButton} onClick={() => setSelectedLead(lead)}>{c.open as string}</button></td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr><td colSpan={8}>{c.noLeads as string}</td></tr>
+                  )}
                 </tbody>
               </table>
             </div>
@@ -371,13 +473,16 @@ export default function CRMWorkspaceClient() {
               <div><span>{c.leadDetail as string}</span><h3>{selectedLead.storeName}</h3></div>
               <button type="button" onClick={() => setSelectedLead(null)}>×</button>
             </div>
+            <Detail label="Lead Code" value={selectedLead.id} />
             <Detail label={c.businessUnit as string} value={selectedLead.businessUnit} />
+            <Detail label={c.status as string} value={prettyCode(selectedLead.status)} />
+            <Detail label={c.owner as string} value={selectedLead.owner} />
             <Detail label={c.contact as string} value={selectedLead.primaryContact} />
             <Detail label={c.phone as string} value={selectedLead.phone} />
             <Detail label={c.email as string} value={selectedLead.email || "—"} />
             <Detail label={c.whatsapp as string} value={selectedLead.whatsapp || "—"} />
             <Detail label={c.province as string} value={selectedLead.province} />
-            <Detail label={c.source as string} value={prettyCode(selectedLead.source)} />
+            <Detail label={c.source as string} value={selectedLead.sourceDetail ? `${prettyCode(selectedLead.source)} · ${selectedLead.sourceDetail}` : prettyCode(selectedLead.source)} />
             <Detail label={c.legalCompany as string} value={selectedLead.legalCompanyName || "—"} />
             <Detail label={c.individualName as string} value={selectedLead.individualName || "—"} />
             <Detail label={c.campaign as string} value={selectedLead.campaign || "—"} />
@@ -388,24 +493,48 @@ export default function CRMWorkspaceClient() {
       )}
 
       {showNewLead && (
-        <div className={styles.overlay} onMouseDown={() => setShowNewLead(false)}>
+        <div className={styles.overlay} onMouseDown={() => !savingLead && setShowNewLead(false)}>
           <form className={styles.modal} onSubmit={createLead} onMouseDown={(event) => event.stopPropagation()}>
             <div className={styles.drawerHeader}>
-              <div><span>{c.qaOnly as string}</span><h3>{c.createLead as string}</h3><p>{c.createLeadHint as string}</p></div>
-              <button type="button" onClick={() => setShowNewLead(false)}>×</button>
+              <div><span>REAL DATA</span><h3>{c.createLead as string}</h3><p>{c.createLeadHint as string}</p></div>
+              <button type="button" disabled={savingLead} onClick={() => setShowNewLead(false)}>×</button>
             </div>
             <div className={styles.formGrid}>
+              <label className={styles.field}>
+                <span>{c.businessUnit as string} *</span>
+                <select
+                  name="businessUnit"
+                  defaultValue={businessUnit === "ALL" ? selectableBusinessUnits[0]?.code : businessUnit}
+                  required
+                >
+                  {selectableBusinessUnits.map((item) => (
+                    <option key={item.id} value={item.code}>{item.code}</option>
+                  ))}
+                </select>
+              </label>
               <Field label={`${c.store as string} *`} name="storeName" required />
               <Field label={`${c.contact as string} *`} name="primaryContact" required />
               <Field label={`${c.phone as string} *`} name="phone" required />
               <Field label={`${c.province as string} *`} name="province" required />
-              <label className={styles.field}><span>{c.source as string} *</span><select name="source" defaultValue="OWN_LEAD">{LEAD_SOURCES.map((source) => <option key={source} value={source}>{prettyCode(source)}</option>)}</select></label>
+              <label className={styles.field}>
+                <span>{c.source as string} *</span>
+                <select
+                  name="source"
+                  value={newLeadSource}
+                  onChange={(event) => setNewLeadSource(event.target.value as LeadSource)}
+                >
+                  {LEAD_SOURCES.map((source) => <option key={source} value={source}>{prettyCode(source)}</option>)}
+                </select>
+              </label>
+              {newLeadSource === "OTHER" && (
+                <Field label={`${c.sourceDetail as string} *`} name="sourceDetail" required />
+              )}
               <Field label={`${c.email as string} (${c.optional as string})`} name="email" type="email" />
               <Field label={`${c.whatsapp as string} (${c.optional as string})`} name="whatsapp" />
             </div>
             <div className={styles.modalFooter}>
-              <button type="button" className={styles.secondaryButton} onClick={() => setShowNewLead(false)}>{c.cancel as string}</button>
-              <button type="submit" className={styles.primaryButton}>{c.saveQA as string}</button>
+              <button type="button" className={styles.secondaryButton} disabled={savingLead} onClick={() => setShowNewLead(false)}>{c.cancel as string}</button>
+              <button type="submit" className={styles.primaryButton} disabled={savingLead}>{savingLead ? c.saving as string : c.saveLead as string}</button>
             </div>
           </form>
         </div>

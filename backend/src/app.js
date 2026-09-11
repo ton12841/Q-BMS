@@ -11,6 +11,7 @@ import { employeeOnboardingRouter } from './modules/employee/onboarding/employee
 import { onboardingReviewRouter } from './tools/hrm/onboarding-review/onboarding-review.routes.js';
 import { assetGateRouter } from './tools/hrm/asset-gate/asset-gate.routes.js';
 import { activationRouter } from './tools/hrm/activation/activation.routes.js';
+import { crmRouter } from './tools/crm/crm.routes.js';
 import { employeeWorkspaceRouter } from './workspace/employee/employee-workspace.routes.js';
 import { onboardingE2EQaRouter } from './qa/onboarding-e2e/onboarding-e2e.routes.js';
 import { accessControlRouter } from './core/access-control/access-control.routes.js';
@@ -56,6 +57,7 @@ if (process.env.NODE_ENV !== 'production') {
   app.use('/api/qa/onboarding-e2e', onboardingE2EQaRouter);
 }
 app.use('/api/organization', organizationRouter);
+app.use('/api/crm', crmRouter);
 app.use('/api/employees', employeeRouter);
 app.use('/api/it-admin/account-setup', requirePermission('employee.account_setup.manage'), accountSetupRouter);
 app.use('/api/hrm/invitations', requirePermission('employee.invitation.manage'), invitationRouter);
