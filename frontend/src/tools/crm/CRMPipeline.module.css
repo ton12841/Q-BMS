@@ -1,0 +1,307 @@
+.pipelineSummary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.summaryCard {
+  display: grid;
+  gap: 6px;
+  padding: 13px 14px;
+  border: 1px solid #e4e7ec;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.summaryCard span {
+  color: #667085;
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.summaryCard strong {
+  color: #101828;
+  font-size: 16px;
+  line-height: 1.35;
+}
+
+.pipelineViewport {
+  min-width: 0;
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+
+.pipelineBoard {
+  display: grid;
+  gap: 10px;
+  width: max-content;
+  min-width: 100%;
+  align-items: stretch;
+}
+
+.pipelineColumn {
+  min-height: 520px;
+  overflow: hidden;
+  border: 1px solid #e4e7ec;
+  border-radius: 12px;
+  background: #f7f8fa;
+  transition: border-color 140ms ease, box-shadow 140ms ease, background 140ms ease;
+}
+
+.dropTarget {
+  border-color: #4f7cff;
+  background: #f2f6ff;
+  box-shadow: inset 0 0 0 2px rgba(79, 124, 255, .12);
+}
+
+.columnHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 66px;
+  padding: 12px;
+  border-bottom: 1px solid #e4e7ec;
+  background: #f3f4f6;
+}
+
+.columnHeader > div {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.columnHeader strong {
+  color: #344054;
+  font-size: 13px;
+}
+
+.columnHeader small {
+  overflow: hidden;
+  color: #667085;
+  font-size: 10px;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.columnHeader > span {
+  min-width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: #fff;
+  color: #475467;
+  font-size: 10px;
+  font-weight: 850;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, .05);
+}
+
+.columnCards {
+  display: grid;
+  align-content: start;
+  gap: 9px;
+  min-height: 450px;
+  padding: 9px;
+}
+
+.dealCard {
+  position: relative;
+  padding: 12px;
+  border: 1px solid #e4e7ec;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 2px 7px rgba(15, 23, 42, .05);
+  cursor: grab;
+  user-select: none;
+  transition: transform 120ms ease, box-shadow 120ms ease, opacity 120ms ease, border-color 120ms ease;
+}
+
+.dealCard:hover {
+  transform: translateY(-1px);
+  border-color: #cfd6e4;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, .08);
+}
+
+.dealCard:active {
+  cursor: grabbing;
+}
+
+.draggingCard {
+  opacity: .45;
+  transform: rotate(1deg) scale(.99);
+}
+
+.movingCard {
+  opacity: .65;
+  pointer-events: none;
+}
+
+.cardTopline {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  color: #98a2b3;
+  font-size: 10px;
+  font-weight: 750;
+}
+
+.dealCard h4 {
+  margin: 5px 0 2px;
+  color: #101828;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.dealCard p {
+  margin: 0;
+  color: #667085;
+  font-size: 11px;
+}
+
+.dealValue {
+  display: block;
+  margin: 7px 0 4px;
+  color: #173f87;
+  font-size: 14px;
+}
+
+.cardFacts {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-top: 9px;
+  padding-top: 8px;
+  border-top: 1px solid #edf0f5;
+}
+
+.cardFacts span {
+  padding: 3px 6px;
+  border-radius: 999px;
+  background: #f2f4f7;
+  color: #667085;
+  font-size: 9px;
+  font-weight: 750;
+}
+
+.activityPill {
+  margin-top: 9px;
+  padding: 7px 8px;
+  border-radius: 7px;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.activityNONE {
+  color: #b54708;
+  background: #fffaeb;
+}
+
+.activityOVERDUE {
+  color: #b42318;
+  background: #fef3f2;
+}
+
+.activityTODAY {
+  color: #175cd3;
+  background: #eff8ff;
+}
+
+.activityUPCOMING {
+  color: #027a48;
+  background: #ecfdf3;
+}
+
+.movingLabel {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, .82);
+  color: #173f87;
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.emptyColumn {
+  padding: 20px 10px;
+  color: #98a2b3;
+  font-size: 11px;
+  text-align: center;
+}
+
+.outcomeDock {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  position: sticky;
+  bottom: 8px;
+  z-index: 4;
+}
+
+.lostZone,
+.wonZone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 52px;
+  padding: 9px 14px;
+  border: 1px dashed #d0d5dd;
+  border-radius: 11px;
+  background: rgba(255,255,255,.96);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .06);
+}
+
+.lostZone {
+  color: #b42318;
+  transition: border-color 140ms ease, background 140ms ease, transform 140ms ease;
+}
+
+.lostZoneActive {
+  border-color: #f04438;
+  background: #fef3f2;
+  transform: translateY(-2px);
+}
+
+.wonZone {
+  color: #027a48;
+  background: rgba(236, 253, 243, .96);
+}
+
+.lostZone strong,
+.wonZone strong {
+  font-size: 11px;
+}
+
+.lostZone span,
+.wonZone span {
+  color: #667085;
+  font-size: 10px;
+}
+
+@media (max-width: 900px) {
+  .pipelineSummary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .outcomeDock {
+    grid-template-columns: 1fr;
+    position: static;
+  }
+}
+
+@media (max-width: 560px) {
+  .pipelineSummary {
+    grid-template-columns: 1fr;
+  }
+
+  .lostZone,
+  .wonZone {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
